@@ -338,12 +338,32 @@ body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { co
     }
   }
 
+  function emptyData() {
+    function emptyRows(count) {
+      var arr = [];
+      for (var i = 0; i < count; i++) {
+        arr.push({ p: '', b: 0, l: 0, d: 0 });
+      }
+      return arr;
+    }
+    return {
+      russian: {
+        small: emptyRows(7),
+        large: emptyRows(9)
+      },
+      egyptian: {
+        small: emptyRows(7),
+        large: emptyRows(9)
+      }
+    };
+  }
+
   function resetData() {
     if (!confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) return;
-    clearStorage();
-    data = newData();
-    applyDark(false);
-    render(); restoreTabs();
+    data = emptyData();
+    save();
+    render();
+    restoreTabs();
   }
 
   function save() {
