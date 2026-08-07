@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام توزيع زجاجات المياه</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #f0f2f5; color: #222; padding: 15px; }
+.container { max-width: 1500px; margin: 0 auto; }
+h1 { text-align: center; color: #1a73e8; margin: 0 0 15px; font-size: 26px; }
+.tabs { text-align: center; margin-bottom: 15px; }
+.tab-btn { padding: 10px 28px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; background: #e0e0e0; color: #555; font-weight: bold; margin: 0 4px; }
+.tab-btn.active { background: #1a73e8; color: #fff; }
+.tab-btn:hover { opacity: .85; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.sheet { background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.1); margin-bottom: 20px; overflow: hidden; }
+.sheet-title { background: #1a73e8; color: #fff; padding: 12px 20px; font-size: 18px; font-weight: bold; text-align: center; }
+.sheet-egypt .sheet-title { background: #d32f2f; }
+.sheet-egypt th { background: #d32f2f; }
+.sheet-egypt tr.total td { background: #ffcdd2; }
+.sheet-egypt td input:focus { outline-color: #d32f2f; border-color: #d32f2f; }
+.sheet-egypt .badge-carton { background: #ffebee; color: #c62828; }
+.sheet-egypt .subh-lunch { background: #ffebee !important; color: #c62828 !important; }
+.sheet-egypt .subh-dinner { background: #fce4ec !important; color: #c62828 !important; }
+.table-wrap { overflow-x: auto; padding: 5px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 5px 7px; border: 1px solid #ccc; text-align: center; white-space: nowrap; }
+th { background: #1a73e8; color: #fff; font-weight: 600; }
+tr.total td { background: #d2e3fc; font-weight: bold; }
+
+td input { width: 50px; padding: 2px 4px; border: 1px solid #bbb; border-radius: 3px; text-align: center; font-size: 13px; }
+td input:focus { outline: 2px solid #1a73e8; border-color: #1a73e8; background: #e8f0fe; }
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+.badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px; margin: 1px; }
+.badge-carton { background: #e3f2fd; color: #1565c0; }
+.badge-loose { background: #fff3e0; color: #e65100; }
+
+.btn-reset { background: #ea4335; color: #fff; padding: 8px 22px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; }
+.btn-reset:hover { opacity: .85; }
+.gap { height: 12px; }
+
+body.dark-mode { background: #121212; color: #e0e0e0; }
+body.dark-mode .sheet { background: #1e1e1e; box-shadow: 0 2px 10px rgba(0,0,0,.4); }
+body.dark-mode .sheet-title { background: #0d47a1; color: #e0e0e0; }
+body.dark-mode .sheet-egypt .sheet-title { background: #b71c1c; }
+body.dark-mode .sheet-egypt th { background: #b71c1c; }
+body.dark-mode th { background: #0d47a1; color: #e0e0e0; }
+body.dark-mode table { border-color: #444; }
+body.dark-mode th, body.dark-mode td { border-color: #444; color: #e0e0e0; }
+body.dark-mode tr.total td { background: #1a237e; }
+body.dark-mode .sheet-egypt tr.total td { background: #3a1a1a; }
+body.dark-mode td input { background: #2a2a2a; color: #e0e0e0; border-color: #555; }
+body.dark-mode td input:focus { background: #333; outline-color: #1a73e8; border-color: #1a73e8; }
+body.dark-mode .badge-carton { background: #1a3a5c; color: #90caf9; }
+body.dark-mode .badge-loose { background: #4a2a0a; color: #ffcc80; }
+body.dark-mode .sheet-egypt .badge-carton { background: #4a1a1a; color: #ef9a9a; }
+body.dark-mode .subh-lunch { background: #3a3a3a !important; color: #e0e0e0 !important; }
+body.dark-mode .subh-dinner { background: #3a3a3a !important; color: #e0e0e0 !important; }
+body.dark-mode table tr:first-child th[style*="background"] { background: #3a3a3a !important; color: #e0e0e0 !important; }
+body.dark-mode td[style*="background"][colspan] { background: #222 !important; }
+body.dark-mode .table-wrap > div[style*="background"] { background: #3a3a3a !important; border-color: #444 !important; color: #e0e0e0 !important; }
+body.dark-mode .tab-btn { background: #333; color: #aaa; }
+body.dark-mode .tab-btn.active { background: #1a73e8; color: #fff; }
+body.dark-mode .btn-reset { background: #c62828; }
+body.dark-mode .add-row-btn { background: #2e7d32 !important; }
+body.dark-mode .sheet-egypt .subh-lunch, body.dark-mode .sheet-egypt .subh-dinner { background: #3a3a3a !important; color: #e0e0e0 !important; }
+body.dark-mode #darkToggle { border-color: #555; }
+body.dark-mode .table-wrap > div > div[style*="background"] { background: #1e1e1e !important; border-color: #444 !important; }
+body.dark-mode .table-wrap > div > div[style*="background"] h3 { color: #90caf9 !important; }
+body.dark-mode .table-wrap > div > div[style*="background"] hr { border-color: #444 !important; }
+body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] { background: #1a1a1a !important; border-color: #4a1a1a !important; }
+body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { color: #ef9a9a !important; }
+
+@media print {
+  body { background: #fff; padding: 5px; }
+  .tab-btn, .btn-reset { display: none; }
+  .tab-content { display: block !important; }
+  .sheet { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div style="text-align:right;margin-bottom:4px">
+  <button id="darkToggle" style="background:none;border:1px solid #bbb;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:18px" title="تبديل الوضع الليلي">🌙</button>
+</div>
+<h1>نظام توزيع زجاجات المياه</h1>
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="russian">القسم الروسي</button>
+  <button class="tab-btn" data-tab="egyptian">القسم المصري</button>
+</div>
+<div id="tab-russian" class="tab-content active"></div>
+<div id="tab-egyptian" class="tab-content"></div>
+<div style="text-align:center;padding:12px">
+  <button class="btn-reset" style="padding:8px 22px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;background:#ea4335;color:#fff">اعادة تعيين</button>
+</div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  var KEY = 'wb_data_v4';
+  var S = 20, L = 12;
+
+  function getStorage(k) {
+    try { return localStorage.getItem(k); } catch(e) { return null; }
+  }
+  function setStorage(k, v) {
+    try { localStorage.setItem(k, v); } catch(e) {}
+  }
+  function clearStorage() {
+    try { localStorage.clear(); } catch(e) {}
+  }
+
+  function newData() {
+    return {
+      russian: {
+        small: [
+          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
+          { p: '', b: 0, l: 55, d: 30 },
+          { p: '', b: 0, l: 56, d: 50 },
+          { p: '', b: 0, l: 60, d: 0 },
+          { p: '', b: 0, l: 0, d: 20 },
+          { p: '', b: 0, l: 50, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 }
+        ],
+        large: [
+          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
+          { p: '', b: 0, l: 55, d: 0 },
+          { p: '', b: 0, l: 56, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 },
+          { p: '', b: 0, l: 452, d: 0 },
+          { p: '', b: 0, l: 30, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 }
+        ]
+      },
+      egyptian: {
+        small: [
+          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
+          { p: '', b: 0, l: 55, d: 30 },
+          { p: '', b: 0, l: 56, d: 50 },
+          { p: '', b: 0, l: 60, d: 0 },
+          { p: '', b: 0, l: 0, d: 20 },
+          { p: '', b: 0, l: 50, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 }
+        ],
+        large: [
+          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
+          { p: '', b: 0, l: 55, d: 0 },
+          { p: '', b: 0, l: 56, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 },
+          { p: '', b: 0, l: 452, d: 0 },
+          { p: '', b: 0, l: 30, d: 0 },
+          { p: '', b: 0, l: 0, d: 0 }
+        ]
+      }
+    };
+  }
+
+  var data = newData();
+  var currentTab = 'russian';
+
+  function total(arr, f) {
+    if (!Array.isArray(arr)) return 0;
+    var s = 0;
+    for (var i = 0; i < arr.length; i++) s += Number(arr[i] && arr[i][f] || 0);
+    return s;
+  }
+
+  function badge(v, sz) {
+    if (!v || v === 0) return '<span style=color:#999>—</span>';
+    var q = Math.floor(v / sz);
+    var r = v % sz;
+    var a = [];
+    if (q > 0) a.push('<span class="badge badge-carton">' + q + ' كرتونة</span>');
+    if (r > 0) a.push('<span class="badge badge-loose">' + r + ' فرط</span>');
+    return a.join(' + ');
+  }
+
+  function buildTable(rows, per, label, isLarge, k) {
+    rows = Array.isArray(rows) ? rows : [];
+    var tB = total(rows, 'b');
+    var tL = total(rows, 'l');
+    var tD = total(rows, 'd');
+    var sz = isLarge ? 'كبيرة' : 'صغيرة';
+    var sec = isLarge ? 'large' : 'small';
+    var h = '';
+
+    h += '<div style="font-size:15px;font-weight:bold;padding:8px 10px;background:#f8f9fa;border:1px solid #ccc;border-bottom:none;border-radius:6px 6px 0 0;text-align:center">' + label + '</div>';
+    h += '<table>';
+    h += '<tr><th colspan="5" style="background:#f8f9fa;color:#555;border-bottom:none"></th>';
+    h += '<th class="subh-lunch" style="background:#e8f0fe;color:#1a73e8;border-bottom:none">الغداء</th>';
+    h += '<th class="subh-dinner" style="background:#fff3e0;color:#e65100;border-bottom:none">العشاء</th>';
+    h += '</tr>';
+    h += '<tr><th>#</th><th>النقطة</th><th>الفطور</th><th>الغداء</th><th>العشاء</th>';
+    h += '<th>كرتونة (زجاجة ' + sz + ')</th>';
+    h += '<th>كرتونة (ماء ' + sz + ')</th>';
+    h += '</tr>';
+
+    var i, r;
+    for (i = 0; i < rows.length; i++) {
+      r = rows[i] || {};
+      h += '<tr>';
+      h += '<td>' + (i + 1) + '</td>';
+      h += '<td><input type=text value="' + (r.p || '') + '" style=width:120px data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="p"></td>';
+      h += '<td><input type=number min=0 value="' + (r.b || 0) + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="b"></td>';
+      h += '<td><input type=number min=0 value="' + (r.l || 0) + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="l"></td>';
+      h += '<td><input type=number min=0 value="' + (r.d || 0) + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="d"></td>';
+      h += '<td>' + badge(r.l || 0, per) + '</td>';
+      h += '<td>' + badge(r.d || 0, per) + '</td>';
+      h += '</tr>';
+    }
+
+    h += '<tr class=total>';
+    h += '<td></td><td>الإجمالي</td>';
+    h += '<td>' + tB + '</td><td>' + tL + '</td><td>' + tD + '</td>';
+    h += '<td>' + badge(tL, per) + '</td>';
+    h += '<td>' + badge(tD, per) + '</td>';
+    h += '</tr>';
+
+    h += '<tr><td colspan="7" style="background:#f0f2f5;padding:6px;text-align:center">';
+    h += '<button class="add-row-btn" data-addk="' + k + '" data-addsec="' + sec + '" style="padding:5px 15px;border:none;border-radius:4px;background:#34a853;color:#fff;cursor:pointer;font-size:13px;font-weight:bold">+ اضافة صف</button>';
+    h += '</td></tr>';
+
+    h += '</table>';
+    return h;
+  }
+
+  function boxify(v, sz, cartonCls, looseCls) {
+    if (!v || v === 0) return '<span style=color:#999>—</span>';
+    var q = Math.floor(v / sz), r = v % sz;
+    var a = [];
+    if (q > 0) a.push('<span class="' + cartonCls + '" style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:15px;font-weight:bold;margin:2px">' + q + ' كرتونة</span>');
+    if (r > 0) a.push('<span class="' + looseCls + '" style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:15px;font-weight:bold;margin:2px">' + r + ' فرط</span>');
+    return a.join(' <span style=font-size:18px;font-weight:bold;color:#666>+</span> ');
+  }
+
+  function buildSummary(sec, isEgypt) {
+    sec = sec || {};
+    var small = Array.isArray(sec.small) ? sec.small : [];
+    var large = Array.isArray(sec.large) ? sec.large : [];
+    var sL = total(small, 'l'), sD = total(small, 'd');
+    var lL = total(large, 'l'), lD = total(large, 'd');
+    var c1 = isEgypt ? '#c62828' : '#e65100';
+    var c2 = isEgypt ? '#d32f2f' : '#1565c0';
+    var bg1 = isEgypt ? '#ffebee' : '#fff8e1';
+    var bd1 = isEgypt ? '#ffcdd2' : '#ffe0b2';
+    var bg2 = isEgypt ? '#fce4ec' : '#e3f2fd';
+    var bd2 = isEgypt ? '#f8bbd0' : '#bbdefb';
+    var cc = 'badge-carton';
+    var lc = 'badge-loose';
+    var h = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;padding:12px">';
+    h += '<div style="background:' + bg1 + ';padding:12px;border-radius:6px;border:1px solid ' + bd1 + '">';
+    h += '<h3 style="color:' + c1 + ';font-size:14px;margin-bottom:8px;text-align:center">🍽 اجمالي الغداء</h3>';
+    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة صغيرة (' + sL + '):</div>';
+    h += '<div style="text-align:center;margin:4px 0">' + boxify(sL, S, cc, lc) + '</div>';
+    h += '<hr style="margin:8px 0;border-color:' + bd1 + '">';
+    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة كبيرة (' + lL + '):</div>';
+    h += '<div style="text-align:center;margin:4px 0">' + boxify(lL, L, cc, lc) + '</div>';
+    h += '<hr style="margin:8px 0;border-color:' + bd1 + '"><div style="font-weight:bold;font-size:16px;text-align:center">المجموع: ' + (sL + lL) + ' زجاجة</div>';
+    h += '</div>';
+    h += '<div style="background:' + bg2 + ';padding:12px;border-radius:6px;border:1px solid ' + bd2 + '">';
+    h += '<h3 style="color:' + c2 + ';font-size:14px;margin-bottom:8px;text-align:center">🌙 اجمالي العشاء</h3>';
+    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة صغيرة (' + sD + '):</div>';
+    h += '<div style="text-align:center;margin:4px 0">' + boxify(sD, S, cc, lc) + '</div>';
+    h += '<hr style="margin:8px 0;border-color:' + bd2 + '">';
+    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة كبيرة (' + lD + '):</div>';
+    h += '<div style="text-align:center;margin:4px 0">' + boxify(lD, L, cc, lc) + '</div>';
+    h += '<hr style="margin:8px 0;border-color:' + bd2 + '"><div style="font-weight:bold;font-size:16px;text-align:center">المجموع: ' + (sD + lD) + ' زجاجة</div>';
+    h += '</div>';
+    h += '</div>';
+    return h;
+  }
+
+  function renderSection(key, sec) {
+    sec = sec || {};
+    var name = (key === 'russian') ? 'القسم الروسي (RUSSIAN)' : 'القسم المصري (EGYPTIAN)';
+    var h = '';
+    h += '<div class="sheet' + (key === 'egyptian' ? ' sheet-egypt' : '') + '">';
+    h += '<div class="sheet-title">' + name + '</div>';
+    h += '<div class="table-wrap">';
+    h += buildTable(sec.small, S, 'زجاجة ماء صغيرة (20/كرتونة)', false, key);
+    h += '<div class="gap"></div>';
+    h += buildTable(sec.large, L, 'زجاجة ماء كبيرة (12/كرتونة)', true, key);
+    h += buildSummary(sec, key === 'egyptian');
+    h += '</div></div>';
+    return h;
+  }
+
+  function render() {
+    for (var k in data) {
+      if (data.hasOwnProperty(k)) {
+        var el = document.getElementById('tab-' + k);
+        if (el) el.innerHTML = renderSection(k, data[k]);
+      }
+    }
+  }
+
+  // Use event delegation for inputs
+  document.addEventListener('input', function(e) {
+    if (e.target.tagName === 'INPUT' && e.target.getAttribute('data-f')) {
+      var inp = e.target;
+      var k = inp.getAttribute('data-k');
+      var sec = inp.getAttribute('data-sec');
+      var idx = parseInt(inp.getAttribute('data-idx'));
+      var f = inp.getAttribute('data-f');
+      var val = (f === 'p') ? inp.value : (parseInt(inp.value) || 0);
+      if (k && sec && data[k] && data[k][sec] && data[k][sec][idx]) {
+        data[k][sec][idx][f] = val;
+        save();
+      }
+    }
+  });
+
+  document.addEventListener('change', function(e) {
+    if (e.target.tagName === 'INPUT' && e.target.getAttribute('data-f') && e.target.getAttribute('data-f') !== 'p') {
+      var savedScroll = window.scrollY || document.documentElement.scrollTop;
+      render();
+      window.scrollTo(0, savedScroll);
+      restoreTabs();
+    }
+  });
+
+  function addRow(k, sec) {
+    if (data[k] && data[k][sec]) {
+      data[k][sec].push({ p: '', b: 0, l: 0, d: 0 });
+      save(); render(); restoreTabs();
+    }
+  }
+
+  function resetData() {
+    if (!confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) return;
+    clearStorage();
+    data = newData();
+    applyDark(false);
+    render(); restoreTabs();
+  }
+
+  function save() {
+    setStorage(KEY, JSON.stringify(data));
+  }
+
+  function load() {
+    try {
+      var saved = getStorage(KEY);
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object' && parsed.russian && parsed.egyptian) {
+          if (Array.isArray(parsed.russian.small) && Array.isArray(parsed.russian.large) &&
+              Array.isArray(parsed.egyptian.small) && Array.isArray(parsed.egyptian.large)) {
+            data = parsed;
+            return;
+          }
+        }
+      }
+    } catch(e) {}
+    data = newData();
+  }
+
+  function restoreTabs() {
+    var btns = document.querySelectorAll('.tab-btn');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].getAttribute('data-tab') === currentTab) {
+        btns[i].className = 'tab-btn active';
+      } else {
+        btns[i].className = 'tab-btn';
+      }
+    }
+    var tabs = document.querySelectorAll('.tab-content');
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].id === 'tab-' + currentTab) {
+        tabs[i].className = 'tab-content active';
+      } else {
+        tabs[i].className = 'tab-content';
+      }
+    }
+  }
+
+  // Tab click handling via delegation
+  var tabsContainer = document.getElementById('tabs');
+  if (tabsContainer) {
+    tabsContainer.addEventListener('click', function(e) {
+      if (e.target.classList.contains('tab-btn')) {
+        var btns = document.querySelectorAll('.tab-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].className = 'tab-btn';
+        e.target.className = 'tab-btn active';
+        currentTab = e.target.getAttribute('data-tab');
+        var tabs = document.querySelectorAll('.tab-content');
+        for (var i = 0; i < tabs.length; i++) tabs[i].className = 'tab-content';
+        var activeTab = document.getElementById('tab-' + currentTab);
+        if (activeTab) activeTab.className = 'tab-content active';
+      }
+    });
+  }
+
+  // Action buttons
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('add-row-btn')) {
+      var k = e.target.getAttribute('data-addk');
+      var sec = e.target.getAttribute('data-addsec');
+      addRow(k, sec);
+    } else if (e.target.classList.contains('btn-reset')) {
+      resetData();
+    }
+  });
+
+  load();
+  render();
+
+  // Dark mode toggle
+  var darkToggle = document.getElementById('darkToggle');
+  var isDark = getStorage('wb_dark') === '1';
+  function applyDark(d) {
+    if (d) {
+      document.body.classList.add('dark-mode');
+      if (darkToggle) darkToggle.textContent = '☀️';
+    } else {
+      document.body.classList.remove('dark-mode');
+      if (darkToggle) darkToggle.textContent = '🌙';
+    }
+    setStorage('wb_dark', d ? '1' : '0');
+  }
+  applyDark(isDark);
+  if (darkToggle) {
+    darkToggle.addEventListener('click', function() {
+      isDark = !isDark;
+      applyDark(isDark);
+    });
+  }
+})();
+</script>
+</body>
+</html>
