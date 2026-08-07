@@ -98,7 +98,7 @@ body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { co
 <div id="tab-russian" class="tab-content active"></div>
 <div id="tab-egyptian" class="tab-content"></div>
 <div style="text-align:center;padding:12px">
-  <button class="btn-reset" style="padding:8px 22px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;background:#ea4335;color:#fff">اعادة تعيين</button>
+  <button id="resetBtn" onclick="window.resetData && window.resetData()" class="btn-reset" style="padding:8px 22px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;background:#ea4335;color:#fff">اعادة تعيين</button>
 </div>
 </div>
 
@@ -213,9 +213,9 @@ body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { co
       h += '<tr>';
       h += '<td>' + (i + 1) + '</td>';
       h += '<td><input type=text value="' + (r.p || '') + '" style=width:120px data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="p"></td>';
-      h += '<td><input type=number min=0 value="' + (r.b || 0) + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="b"></td>';
-      h += '<td><input type=number min=0 value="' + (r.l || 0) + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="l"></td>';
-      h += '<td><input type=number min=0 value="' + (r.d || 0) + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="d"></td>';
+      h += '<td><input type=number min=0 value="' + (r.b || '') + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="b"></td>';
+      h += '<td><input type=number min=0 value="' + (r.l || '') + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="l"></td>';
+      h += '<td><input type=number min=0 value="' + (r.d || '') + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="d"></td>';
       h += '<td>' + badge(r.l || 0, per) + '</td>';
       h += '<td>' + badge(r.d || 0, per) + '</td>';
       h += '</tr>';
@@ -342,7 +342,7 @@ body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { co
     function emptyRows(count) {
       var arr = [];
       for (var i = 0; i < count; i++) {
-        arr.push({ p: '', b: 0, l: 0, d: 0 });
+        arr.push({ p: '', b: '', l: '', d: '' });
       }
       return arr;
     }
@@ -359,12 +359,17 @@ body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { co
   }
 
   function resetData() {
-    if (!confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) return;
+    try {
+      if (window.confirm && !window.confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) {
+        return;
+      }
+    } catch(e) {}
     data = emptyData();
     save();
     render();
     restoreTabs();
   }
+  window.resetData = resetData;
 
   function save() {
     setStorage(KEY, JSON.stringify(data));
