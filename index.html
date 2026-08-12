@@ -1,468 +1,2563 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام توزيع زجاجات المياه</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #f0f2f5; color: #222; padding: 15px; }
-.container { max-width: 1500px; margin: 0 auto; }
-h1 { text-align: center; color: #1a73e8; margin: 0 0 15px; font-size: 26px; }
-.tabs { text-align: center; margin-bottom: 15px; }
-.tab-btn { padding: 10px 28px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; background: #e0e0e0; color: #555; font-weight: bold; margin: 0 4px; }
-.tab-btn.active { background: #1a73e8; color: #fff; }
-.tab-btn:hover { opacity: .85; }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختبار أنظمة المعلومات الصحية التفاعلي - HIS Medical Systems Exam</title>
+  <!-- Google Fonts: Cairo & OutFit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --warning: #f59e0b;
+      --warning-light: #fffbe6;
+      --border: #e2e8f0;
+      --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-.sheet { background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.1); margin-bottom: 20px; overflow: hidden; }
-.sheet-title { background: #1a73e8; color: #fff; padding: 12px 20px; font-size: 18px; font-weight: bold; text-align: center; }
-.sheet-egypt .sheet-title { background: #d32f2f; }
-.sheet-egypt th { background: #d32f2f; }
-.sheet-egypt tr.total td { background: #ffcdd2; }
-.sheet-egypt td input:focus { outline-color: #d32f2f; border-color: #d32f2f; }
-.sheet-egypt .badge-carton { background: #ffebee; color: #c62828; }
-.sheet-egypt .subh-lunch { background: #ffebee !important; color: #c62828 !important; }
-.sheet-egypt .subh-dinner { background: #fce4ec !important; color: #c62828 !important; }
-.table-wrap { overflow-x: auto; padding: 5px; }
+    [data-theme="dark"] {
+      --bg-body: #0b0f19;
+      --bg-card: #151d30;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --primary-light: #1e293b;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --danger: #f87171;
+      --danger-light: #451a1a;
+      --warning: #fbbf24;
+      --warning-light: #451a03;
+      --border: #26334d;
+      --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    }
 
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th, td { padding: 5px 7px; border: 1px solid #ccc; text-align: center; white-space: nowrap; }
-th { background: #1a73e8; color: #fff; font-weight: 600; }
-tr.total td { background: #d2e3fc; font-weight: bold; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-td input { width: 50px; padding: 2px 4px; border: 1px solid #bbb; border-radius: 3px; text-align: center; font-size: 13px; }
-td input:focus { outline: 2px solid #1a73e8; border-color: #1a73e8; background: #e8f0fe; }
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-input[type=number] { -moz-appearance: textfield; }
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-.badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px; margin: 1px; }
-.badge-carton { background: #e3f2fd; color: #1565c0; }
-.badge-loose { background: #fff3e0; color: #e65100; }
+    /* Header & Navigation */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
 
-.btn-reset { background: #ea4335; color: #fff; padding: 8px 22px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; }
-.btn-reset:hover { opacity: .85; }
-.gap { height: 12px; }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
 
-body.dark-mode { background: #121212; color: #e0e0e0; }
-body.dark-mode .sheet { background: #1e1e1e; box-shadow: 0 2px 10px rgba(0,0,0,.4); }
-body.dark-mode .sheet-title { background: #0d47a1; color: #e0e0e0; }
-body.dark-mode .sheet-egypt .sheet-title { background: #b71c1c; }
-body.dark-mode .sheet-egypt th { background: #b71c1c; }
-body.dark-mode th { background: #0d47a1; color: #e0e0e0; }
-body.dark-mode table { border-color: #444; }
-body.dark-mode th, body.dark-mode td { border-color: #444; color: #e0e0e0; }
-body.dark-mode tr.total td { background: #1a237e; }
-body.dark-mode .sheet-egypt tr.total td { background: #3a1a1a; }
-body.dark-mode td input { background: #2a2a2a; color: #e0e0e0; border-color: #555; }
-body.dark-mode td input:focus { background: #333; outline-color: #1a73e8; border-color: #1a73e8; }
-body.dark-mode .badge-carton { background: #1a3a5c; color: #90caf9; }
-body.dark-mode .badge-loose { background: #4a2a0a; color: #ffcc80; }
-body.dark-mode .sheet-egypt .badge-carton { background: #4a1a1a; color: #ef9a9a; }
-body.dark-mode .subh-lunch { background: #3a3a3a !important; color: #e0e0e0 !important; }
-body.dark-mode .subh-dinner { background: #3a3a3a !important; color: #e0e0e0 !important; }
-body.dark-mode table tr:first-child th[style*="background"] { background: #3a3a3a !important; color: #e0e0e0 !important; }
-body.dark-mode td[style*="background"][colspan] { background: #222 !important; }
-body.dark-mode .table-wrap > div[style*="background"] { background: #3a3a3a !important; border-color: #444 !important; color: #e0e0e0 !important; }
-body.dark-mode .tab-btn { background: #333; color: #aaa; }
-body.dark-mode .tab-btn.active { background: #1a73e8; color: #fff; }
-body.dark-mode .btn-reset { background: #c62828; }
-body.dark-mode .add-row-btn { background: #2e7d32 !important; }
-body.dark-mode .sheet-egypt .subh-lunch, body.dark-mode .sheet-egypt .subh-dinner { background: #3a3a3a !important; color: #e0e0e0 !important; }
-body.dark-mode #darkToggle { border-color: #555; }
-body.dark-mode .table-wrap > div > div[style*="background"] { background: #1e1e1e !important; border-color: #444 !important; }
-body.dark-mode .table-wrap > div > div[style*="background"] h3 { color: #90caf9 !important; }
-body.dark-mode .table-wrap > div > div[style*="background"] hr { border-color: #444 !important; }
-body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] { background: #1a1a1a !important; border-color: #4a1a1a !important; }
-body.dark-mode .sheet-egypt .table-wrap > div > div[style*="background"] h3 { color: #ef9a9a !important; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
 
-@media print {
-  body { background: #fff; padding: 5px; }
-  .tab-btn, .btn-reset { display: none; }
-  .tab-content { display: block !important; }
-  .sheet { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
-}
-</style>
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand-title h1 {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .brand-title span {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: var(--transition);
+    }
+
+    .icon-btn:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-body);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      filter: brightness(0.9);
+    }
+
+    /* Container Main */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* Exam Tips Collapsible Banner */
+    .tips-banner {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(79, 70, 229, 0.05));
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .tips-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .tips-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+    .tips-content {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .tip-card {
+      background: var(--bg-card);
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .tip-card span {
+      font-size: 18px;
+    }
+
+    /* Controls Bar & Filters */
+    .quiz-controls {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .select-input, .search-input {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .select-input:focus, .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .mode-switch {
+      display: inline-flex;
+      background: var(--bg-body);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .mode-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .mode-btn.active {
+      background: var(--bg-card);
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    /* Progress & Timer Bar */
+    .quiz-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      background: var(--bg-card);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .progress-info {
+      flex: 1;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-outer {
+      height: 10px;
+      background: var(--bg-body);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #4f46e5);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .q-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .q-category {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .flag-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .flag-btn.flagged {
+      color: var(--warning);
+      background: var(--warning-light);
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      color: var(--text-main);
+    }
+
+    /* Options List */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .option-item {
+      background: var(--bg-body);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .option-item:hover:not(.disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateX(-3px);
+    }
+
+    .option-item.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .option-key {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+    }
+
+    .option-item.selected .option-key {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .option-content {
+      font-size: 16px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    /* Feedback Styling in Study Mode */
+    .option-item.correct-answer {
+      border-color: var(--success) !important;
+      background: var(--success-light) !important;
+      color: var(--text-main);
+    }
+
+    .option-item.correct-answer .option-key {
+      background: var(--success) !important;
+      color: white !important;
+      border-color: var(--success) !important;
+    }
+
+    .option-item.wrong-answer {
+      border-color: var(--danger) !important;
+      background: var(--danger-light) !important;
+    }
+
+    .option-item.wrong-answer .option-key {
+      background: var(--danger) !important;
+      color: white !important;
+      border-color: var(--danger) !important;
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      background: var(--primary-light);
+      border-right: 4px solid var(--primary);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin-top: 16px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .explanation-box.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .explanation-title {
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Footer Buttons inside Question Card */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Question Matrix Drawer Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 650px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--card-shadow);
+      transform: translateY(20px);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .q-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+      gap: 10px;
+    }
+
+    .q-matrix-btn {
+      width: 100%;
+      height: 46px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .q-matrix-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .q-matrix-btn.active {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .q-matrix-btn.answered {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .q-matrix-btn.correct {
+      background: var(--success-light);
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .q-matrix-btn.wrong {
+      background: var(--danger-light);
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .q-matrix-btn .flag-dot {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--warning);
+    }
+
+    /* Results Screen */
+    .results-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      display: none;
+    }
+
+    .results-card.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .score-circle-wrap {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 24px;
+    }
+
+    .score-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .score-bg-circle {
+      stroke: var(--bg-body);
+      stroke-width: 12;
+    }
+
+    .score-progress-circle {
+      stroke: var(--primary);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 1.2s ease-in-out;
+    }
+
+    .score-inner-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-val {
+      font-size: 42px;
+      font-weight: 900;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1;
+    }
+
+    .score-lbl {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .stats-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .stat-box {
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: var(--radius-md);
+    }
+
+    .stat-num {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .section-breakdown {
+      text-align: right;
+      margin-bottom: 32px;
+    }
+
+    .sec-item {
+      margin-bottom: 12px;
+    }
+
+    .sec-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .sec-bar-bg {
+      height: 8px;
+      background: var(--bg-body);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .sec-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.8s ease;
+    }
+
+    .answer-review-list {
+      text-align: right;
+      margin-top: 32px;
+    }
+
+    .review-item {
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .review-q-title {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .review-ans-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .review-ans-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .badge-ans {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+    }
+
+    .badge-ans-user {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .badge-ans-correct {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Print Styles */
+    @media print {
+      header, .quiz-controls, .tips-banner, .card-footer, .icon-btn, .modal-overlay {
+        display: none !important;
+      }
+      body { background: white !important; color: black !important; }
+      .question-card, .results-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<div style="text-align:right;margin-bottom:4px">
-  <button id="darkToggle" style="background:none;border:1px solid #bbb;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:18px" title="تبديل الوضع الليلي">🌙</button>
-</div>
-<h1>نظام توزيع زجاجات المياه</h1>
-<div class="tabs" id="tabs">
-  <button class="tab-btn active" data-tab="russian">القسم الروسي</button>
-  <button class="tab-btn" data-tab="egyptian">القسم المصري</button>
-</div>
-<div id="tab-russian" class="tab-content active"></div>
-<div id="tab-egyptian" class="tab-content"></div>
-<div style="text-align:center;padding:12px">
-  <button id="resetBtn" onclick="window.resetData && window.resetData()" class="btn-reset" style="padding:8px 22px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;background:#ea4335;color:#fff">اعادة تعيين</button>
-</div>
-</div>
 
-<script>
-(function() {
-  'use strict';
-  var KEY = 'wb_data_v4';
-  var S = 20, L = 12;
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">🏥</div>
+        <div class="brand-title">
+          <h1>اختبار أنظمة المعلومات الصحية (HIS)</h1>
+          <span>بنك الأسئلة التفاعلي الشامل - 70 سؤالاً</span>
+        </div>
+      </a>
 
-  function getStorage(k) {
-    try { return localStorage.getItem(k); } catch(e) { return null; }
-  }
-  function setStorage(k, v) {
-    try { localStorage.setItem(k, v); } catch(e) {}
-  }
-  function clearStorage() {
-    try { localStorage.clear(); } catch(e) {}
-  }
+      <div class="header-actions">
+        <button class="icon-btn" id="soundToggleBtn" title="كتم/تشغيل الصوت">🔊</button>
+        <button class="icon-btn" id="themeToggleBtn" title="الوضع الليلي/النهاري">🌙</button>
+        <button class="btn btn-secondary" id="gridModalOpenBtn">🗺️ خريطة الأسئلة</button>
+      </div>
+    </div>
+  </header>
 
-  function newData() {
-    return {
-      russian: {
-        small: [
-          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
-          { p: '', b: 0, l: 55, d: 30 },
-          { p: '', b: 0, l: 56, d: 50 },
-          { p: '', b: 0, l: 60, d: 0 },
-          { p: '', b: 0, l: 0, d: 20 },
-          { p: '', b: 0, l: 50, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 }
+  <!-- Main Content -->
+  <main>
+
+    <!-- Tips Banner -->
+    <div class="tips-banner">
+      <div class="tips-header" id="tipsToggleHeader">
+        <div class="tips-title">
+          <span>💡</span>
+          <span>نصائح وملاحظات هامة قبل الامتحان</span>
+        </div>
+        <span id="tipsArrow">▼</span>
+      </div>
+      <div class="tips-content" id="tipsContent" style="display: none;">
+        <div class="tip-card">
+          <span>🔒</span>
+          <div><strong>المواضيع الأكثر تكراراً:</strong> ركّز على السرية، التحكم في الوصول، السجل كوثيقة قانونية، وحقوق المريض.</div>
+        </div>
+        <div class="tip-card">
+          <span>✏️</span>
+          <div><strong>القاعدة الذهبية:</strong> لا تحذف أي معلومة خاطئة من السجل الطبي — بل أضف ملاحظة تصحيح موثقة.</div>
+        </div>
+        <div class="tip-card">
+          <span>🛡️</span>
+          <div><strong>مثلث الأمن الثلاثي (CIA):</strong> السرية (Confidentiality) – السلامة (Integrity) – التوفر (Availability).</div>
+        </div>
+        <div class="tip-card">
+          <span>❤️</span>
+          <div><strong>مفتاح الحل:</strong> إذا احتارت في سؤال، اسأل نفسك "هل هذا الإجراء يحمي المريض وخصوصيته؟".</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="quiz-controls">
+      <div class="control-group">
+        <select id="sectionSelect" class="select-input">
+          <option value="all">🌐 جميع الأقسام (70 سؤال)</option>
+          <option value="part1">📌 المجموعة الأولية (20 سؤال)</option>
+          <option value="part2">📚 الأسئلة التخصصية (50 سؤال)</option>
+          <option value="cat1">🔹 أساسيات HIS والسجل الإلكتروني</option>
+          <option value="cat2">🔹 السرية وحقوق المريض</option>
+          <option value="cat3">🔹 التحكم في الوصول والمصادقة</option>
+          <option value="cat4">🔹 أمن المعلومات والصيانة</option>
+          <option value="cat5">🔹 التقارير ودعم القرار</option>
+        </select>
+
+        <div class="mode-switch">
+          <button class="mode-btn active" data-mode="study">الوضع التدريبي</button>
+          <button class="mode-btn" data-mode="exam">وضع الامتحان (الموقوت)</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <button class="btn btn-secondary" id="shuffleBtn">🔀 خلط الأسئلة</button>
+        <button class="btn btn-secondary" id="filterFlaggedBtn">🔖 المعلمة بعلامة (<span id="flaggedCount">0</span>)</button>
+        <button class="btn btn-secondary" id="resetBtn">🔄 إعادة ضبظ</button>
+      </div>
+    </div>
+
+    <!-- Progress Status Bar -->
+    <div class="quiz-status-bar">
+      <div class="progress-info">
+        <div class="progress-text">
+          <span>تقدم الإجابات</span>
+          <span id="progressTextVal">السؤال 1 من 70 (0%)</span>
+        </div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progressBarFill"></div>
+        </div>
+      </div>
+
+      <div class="timer-badge" id="timerContainer" style="display: none;">
+        <span>⏱️</span>
+        <span id="timerDisplay">45:00</span>
+      </div>
+    </div>
+
+    <!-- Question View Area -->
+    <div id="quizContainer">
+      <div class="question-card" id="questionCard">
+        <div class="q-meta">
+          <span class="q-category" id="qCategoryBadge">أساسيات HIS</span>
+          <button class="flag-btn" id="flagQuestionBtn">
+            <span>🔖</span> <span id="flagBtnText">تعليم السؤال</span>
+          </button>
+        </div>
+
+        <div class="question-text" id="qText">جاري تحميل السؤال...</div>
+
+        <div class="options-grid" id="optionsGrid">
+          <!-- Option buttons inserted via JS -->
+        </div>
+
+        <div class="explanation-box" id="explanationBox">
+          <div class="explanation-title">💡 التوضيح والإجابة النموذجية:</div>
+          <div id="explanationText">--</div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn btn-secondary" id="prevBtn">السابق ➔</button>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-primary" id="nextBtn">➔ التالي</button>
+            <button class="btn btn-success" id="finishExamBtn">🏁 إنهاء الاختبار</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results View Screen -->
+    <div class="results-card" id="resultsCard">
+      <h2 style="font-size: 26px; font-weight: 900; margin-bottom: 8px;">نتيجة الاختبار النهائي</h2>
+      <p style="color: var(--text-muted); margin-bottom: 24px;">تقرير تفصيلي عن أدائك في اختبار أنظمة المعلومات الصحية</p>
+
+      <div class="score-circle-wrap">
+        <svg class="score-svg" viewBox="0 0 160 160">
+          <circle class="score-bg-circle" cx="80" cy="80" r="70"></circle>
+          <circle class="score-progress-circle" id="scoreCircleFill" cx="80" cy="80" r="70"></circle>
+        </svg>
+        <div class="score-inner-text">
+          <div class="score-val" id="scorePercent">0%</div>
+          <div class="score-lbl" id="scoreVerdict">ممتاز</div>
+        </div>
+      </div>
+
+      <div class="stats-summary-grid">
+        <div class="stat-box">
+          <div class="stat-num" id="statCorrect" style="color: var(--success);">0</div>
+          <div class="stat-lbl">إجابة صحيحة</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statWrong" style="color: var(--danger);">0</div>
+          <div class="stat-lbl">إجابة خاطئة</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statUnanswered" style="color: var(--warning);">0</div>
+          <div class="stat-lbl">لم تُجب عليها</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statTime">00:00</div>
+          <div class="stat-lbl">الوقت المستغرق</div>
+        </div>
+      </div>
+
+      <div class="section-breakdown">
+        <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">الأداء حسب الأقسام والمحاور:</h3>
+        <div id="sectionBreakdownList">
+          <!-- Generated via JS -->
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="retakeBtn">🔄 إعادة الاختبار</button>
+        <button class="btn btn-secondary" id="toggleReviewBtn">👁️ مراجعة الإجابات الخاطئة</button>
+        <button class="btn btn-secondary" id="printReportBtn">🖨️ تصدير التقرير / طباعة</button>
+      </div>
+
+      <div class="answer-review-list" id="answerReviewList" style="display: none;">
+        <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">تفاصيل المراجعة الشاملة:</h3>
+        <div id="reviewItemsContainer"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Question Grid Modal -->
+  <div class="modal-overlay" id="gridModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🗺️ خريطة التنقل السريع للأسئلة</h3>
+        <button class="icon-btn" id="gridModalCloseBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="q-matrix-grid" id="qMatrixGrid">
+          <!-- Inserted dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- QUESTIONS DATABASE (70 QUESTIONS COMPLETE & ACCURATE) ---
+    const rawQuestions = [
+      // PART 1 (20 QUESTIONS)
+      {
+        id: 1, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الهدف الرئيسي من \"سجل التدقيق\" (Audit Trail) في نظام HIS؟",
+        options: [
+          "تسريع عملية البحث عن المرضى",
+          "تقليل عدد الموظفين في المستشفى",
+          "تسجيل كل نشاط يقوم به المستخدم لضمان الشفافية والمساءلة",
+          "طباعة التقارير بشكل تلقائي"
         ],
-        large: [
-          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
-          { p: '', b: 0, l: 55, d: 0 },
-          { p: '', b: 0, l: 56, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 },
-          { p: '', b: 0, l: 452, d: 0 },
-          { p: '', b: 0, l: 30, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 }
-        ]
+        correct: 2,
+        explanation: "سجل التدقيق يُسجل كل عملية (عرض، تعديل، إدخال) يقوم بها المستخدم مع تحديد الوقت والهوية، مما يضمن الشفافية وتحديد المسؤوليات."
       },
-      egyptian: {
-        small: [
-          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
-          { p: '', b: 0, l: 55, d: 30 },
-          { p: '', b: 0, l: 56, d: 50 },
-          { p: '', b: 0, l: 60, d: 0 },
-          { p: '', b: 0, l: 0, d: 20 },
-          { p: '', b: 0, l: 50, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 }
+      {
+        id: 2, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي من التالي يُعتبر \"معلومة لا يمكن تغييرها\" في السجل الطبي؟",
+        options: [
+          "رقم الهاتف",
+          "المعلومة الخاطئة — يجب تصحيحها دون حذفها",
+          "عنوان السكن",
+          "نوع الدم"
         ],
-        large: [
-          { p: 'NIKIMT - ABK 8.4', b: 62, l: 56, d: 30 },
-          { p: '', b: 0, l: 55, d: 0 },
-          { p: '', b: 0, l: 56, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 },
-          { p: '', b: 0, l: 452, d: 0 },
-          { p: '', b: 0, l: 30, d: 0 },
-          { p: '', b: 0, l: 0, d: 0 }
-        ]
-      }
-    };
-  }
-
-  var data = newData();
-  var currentTab = 'russian';
-
-  function total(arr, f) {
-    if (!Array.isArray(arr)) return 0;
-    var s = 0;
-    for (var i = 0; i < arr.length; i++) s += Number(arr[i] && arr[i][f] || 0);
-    return s;
-  }
-
-  function badge(v, sz) {
-    if (!v || v === 0) return '<span style=color:#999>—</span>';
-    var q = Math.floor(v / sz);
-    var r = v % sz;
-    var a = [];
-    if (q > 0) a.push('<span class="badge badge-carton">' + q + ' كرتونة</span>');
-    if (r > 0) a.push('<span class="badge badge-loose">' + r + ' فرط</span>');
-    return a.join(' + ');
-  }
-
-  function buildTable(rows, per, label, isLarge, k) {
-    rows = Array.isArray(rows) ? rows : [];
-    var tB = total(rows, 'b');
-    var tL = total(rows, 'l');
-    var tD = total(rows, 'd');
-    var sz = isLarge ? 'كبيرة' : 'صغيرة';
-    var sec = isLarge ? 'large' : 'small';
-    var h = '';
-
-    h += '<div style="font-size:15px;font-weight:bold;padding:8px 10px;background:#f8f9fa;border:1px solid #ccc;border-bottom:none;border-radius:6px 6px 0 0;text-align:center">' + label + '</div>';
-    h += '<table>';
-    h += '<tr><th colspan="5" style="background:#f8f9fa;color:#555;border-bottom:none"></th>';
-    h += '<th class="subh-lunch" style="background:#e8f0fe;color:#1a73e8;border-bottom:none">الغداء</th>';
-    h += '<th class="subh-dinner" style="background:#fff3e0;color:#e65100;border-bottom:none">العشاء</th>';
-    h += '</tr>';
-    h += '<tr><th>#</th><th>النقطة</th><th>الفطور</th><th>الغداء</th><th>العشاء</th>';
-    h += '<th>كرتونة (زجاجة ' + sz + ')</th>';
-    h += '<th>كرتونة (ماء ' + sz + ')</th>';
-    h += '</tr>';
-
-    var i, r;
-    for (i = 0; i < rows.length; i++) {
-      r = rows[i] || {};
-      h += '<tr>';
-      h += '<td>' + (i + 1) + '</td>';
-      h += '<td><input type=text value="' + (r.p || '') + '" style=width:120px data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="p"></td>';
-      h += '<td><input type=number min=0 value="' + (r.b || '') + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="b"></td>';
-      h += '<td><input type=number min=0 value="' + (r.l || '') + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="l"></td>';
-      h += '<td><input type=number min=0 value="' + (r.d || '') + '" data-k="' + k + '" data-sec="' + sec + '" data-idx="' + i + '" data-f="d"></td>';
-      h += '<td>' + badge(r.l || 0, per) + '</td>';
-      h += '<td>' + badge(r.d || 0, per) + '</td>';
-      h += '</tr>';
-    }
-
-    h += '<tr class=total>';
-    h += '<td></td><td>الإجمالي</td>';
-    h += '<td>' + tB + '</td><td>' + tL + '</td><td>' + tD + '</td>';
-    h += '<td>' + badge(tL, per) + '</td>';
-    h += '<td>' + badge(tD, per) + '</td>';
-    h += '</tr>';
-
-    h += '<tr><td colspan="7" style="background:#f0f2f5;padding:6px;text-align:center">';
-    h += '<button class="add-row-btn" data-addk="' + k + '" data-addsec="' + sec + '" style="padding:5px 15px;border:none;border-radius:4px;background:#34a853;color:#fff;cursor:pointer;font-size:13px;font-weight:bold">+ اضافة صف</button>';
-    h += '</td></tr>';
-
-    h += '</table>';
-    return h;
-  }
-
-  function boxify(v, sz, cartonCls, looseCls) {
-    if (!v || v === 0) return '<span style=color:#999>—</span>';
-    var q = Math.floor(v / sz), r = v % sz;
-    var a = [];
-    if (q > 0) a.push('<span class="' + cartonCls + '" style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:15px;font-weight:bold;margin:2px">' + q + ' كرتونة</span>');
-    if (r > 0) a.push('<span class="' + looseCls + '" style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:15px;font-weight:bold;margin:2px">' + r + ' فرط</span>');
-    return a.join(' <span style=font-size:18px;font-weight:bold;color:#666>+</span> ');
-  }
-
-  function buildSummary(sec, isEgypt) {
-    sec = sec || {};
-    var small = Array.isArray(sec.small) ? sec.small : [];
-    var large = Array.isArray(sec.large) ? sec.large : [];
-    var sL = total(small, 'l'), sD = total(small, 'd');
-    var lL = total(large, 'l'), lD = total(large, 'd');
-    var c1 = isEgypt ? '#c62828' : '#e65100';
-    var c2 = isEgypt ? '#d32f2f' : '#1565c0';
-    var bg1 = isEgypt ? '#ffebee' : '#fff8e1';
-    var bd1 = isEgypt ? '#ffcdd2' : '#ffe0b2';
-    var bg2 = isEgypt ? '#fce4ec' : '#e3f2fd';
-    var bd2 = isEgypt ? '#f8bbd0' : '#bbdefb';
-    var cc = 'badge-carton';
-    var lc = 'badge-loose';
-    var h = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;padding:12px">';
-    h += '<div style="background:' + bg1 + ';padding:12px;border-radius:6px;border:1px solid ' + bd1 + '">';
-    h += '<h3 style="color:' + c1 + ';font-size:14px;margin-bottom:8px;text-align:center">🍽 اجمالي الغداء</h3>';
-    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة صغيرة (' + sL + '):</div>';
-    h += '<div style="text-align:center;margin:4px 0">' + boxify(sL, S, cc, lc) + '</div>';
-    h += '<hr style="margin:8px 0;border-color:' + bd1 + '">';
-    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة كبيرة (' + lL + '):</div>';
-    h += '<div style="text-align:center;margin:4px 0">' + boxify(lL, L, cc, lc) + '</div>';
-    h += '<hr style="margin:8px 0;border-color:' + bd1 + '"><div style="font-weight:bold;font-size:16px;text-align:center">المجموع: ' + (sL + lL) + ' زجاجة</div>';
-    h += '</div>';
-    h += '<div style="background:' + bg2 + ';padding:12px;border-radius:6px;border:1px solid ' + bd2 + '">';
-    h += '<h3 style="color:' + c2 + ';font-size:14px;margin-bottom:8px;text-align:center">🌙 اجمالي العشاء</h3>';
-    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة صغيرة (' + sD + '):</div>';
-    h += '<div style="text-align:center;margin:4px 0">' + boxify(sD, S, cc, lc) + '</div>';
-    h += '<hr style="margin:8px 0;border-color:' + bd2 + '">';
-    h += '<div style="font-size:14px;font-weight:bold;margin-bottom:4px">🔹 زجاجة كبيرة (' + lD + '):</div>';
-    h += '<div style="text-align:center;margin:4px 0">' + boxify(lD, L, cc, lc) + '</div>';
-    h += '<hr style="margin:8px 0;border-color:' + bd2 + '"><div style="font-weight:bold;font-size:16px;text-align:center">المجموع: ' + (sD + lD) + ' زجاجة</div>';
-    h += '</div>';
-    h += '</div>';
-    return h;
-  }
-
-  function renderSection(key, sec) {
-    sec = sec || {};
-    var name = (key === 'russian') ? 'القسم الروسي (RUSSIAN)' : 'القسم المصري (EGYPTIAN)';
-    var h = '';
-    h += '<div class="sheet' + (key === 'egyptian' ? ' sheet-egypt' : '') + '">';
-    h += '<div class="sheet-title">' + name + '</div>';
-    h += '<div class="table-wrap">';
-    h += buildTable(sec.small, S, 'زجاجة ماء صغيرة (20/كرتونة)', false, key);
-    h += '<div class="gap"></div>';
-    h += buildTable(sec.large, L, 'زجاجة ماء كبيرة (12/كرتونة)', true, key);
-    h += buildSummary(sec, key === 'egyptian');
-    h += '</div></div>';
-    return h;
-  }
-
-  function render() {
-    for (var k in data) {
-      if (data.hasOwnProperty(k)) {
-        var el = document.getElementById('tab-' + k);
-        if (el) el.innerHTML = renderSection(k, data[k]);
-      }
-    }
-  }
-
-  // Use event delegation for inputs
-  document.addEventListener('input', function(e) {
-    if (e.target.tagName === 'INPUT' && e.target.getAttribute('data-f')) {
-      var inp = e.target;
-      var k = inp.getAttribute('data-k');
-      var sec = inp.getAttribute('data-sec');
-      var idx = parseInt(inp.getAttribute('data-idx'));
-      var f = inp.getAttribute('data-f');
-      var val = (f === 'p') ? inp.value : (parseInt(inp.value) || 0);
-      if (k && sec && data[k] && data[k][sec] && data[k][sec][idx]) {
-        data[k][sec][idx][f] = val;
-        save();
-      }
-    }
-  });
-
-  document.addEventListener('change', function(e) {
-    if (e.target.tagName === 'INPUT' && e.target.getAttribute('data-f') && e.target.getAttribute('data-f') !== 'p') {
-      var savedScroll = window.scrollY || document.documentElement.scrollTop;
-      render();
-      window.scrollTo(0, savedScroll);
-      restoreTabs();
-    }
-  });
-
-  function addRow(k, sec) {
-    if (data[k] && data[k][sec]) {
-      data[k][sec].push({ p: '', b: 0, l: 0, d: 0 });
-      save(); render(); restoreTabs();
-    }
-  }
-
-  function emptyData() {
-    function emptyRows(count) {
-      var arr = [];
-      for (var i = 0; i < count; i++) {
-        arr.push({ p: '', b: '', l: '', d: '' });
-      }
-      return arr;
-    }
-    return {
-      russian: {
-        small: emptyRows(7),
-        large: emptyRows(9)
+        correct: 1,
+        explanation: "السجل الطبي وثيقة قانونية؛ لا يُسمح بحذف أي نص أو معلومة خاطئة منه إطلاقاً، بل تُضاف ملاحظة تصحيح موثقة بالتاريخ والسبب."
       },
-      egyptian: {
-        small: emptyRows(7),
-        large: emptyRows(9)
+      {
+        id: 3, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الفرق بين \"الدخول إلى النظام\" و\"الصلاحية لعرض البيانات\"؟",
+        options: [
+          "لا يوجد فرق — كلاهما نفس الشيء",
+          "الدخول يعني وجود حساب، أما الصلاحية تعني ما يُسمح لك برؤيته",
+          "الصلاحية تُعطى فقط للأطباء، والدخول للممرضين فقط",
+          "الدخول يتطلب بصمة، والصلاحية تتطلب كلمة مرور"
+        ],
+        correct: 1,
+        explanation: "الدخول (Authentication) هو إثبات الهوية للوصول للنظام، أما الصلاحية (Authorization) فهي تحديد نطاق البيانات والأدوات المسموح للمستخدم بالوصول إليها."
+      },
+      {
+        id: 4, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي من هذه التقنيات يُعتبر الأكثر أمانًا في التحكم بالوصول؟",
+        options: [
+          "كلمة المرور",
+          "البطاقة الذكية",
+          "البصمة البيومترية",
+          "الرمز النصي"
+        ],
+        correct: 2,
+        explanation: "البصمة البيومترية (كالوجه أو الإصبع) هي عامل أمان فريد يصعب سرقته أو مشاركته أو تزويره مقارنة بكلمات المرور أو البطاقات."
+      },
+      {
+        id: 5, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ماذا يعني \"Opt-out\" بالنسبة للمريض؟",
+        options: [
+          "الموافقة على مشاركة بياناته مع جميع الأطباء",
+          "رفض مشاركة بياناته مع أي جهة — حتى في الطوارئ",
+          "السماح بمشاركة بياناته فقط مع العائلة",
+          "طلب حذف سجله الطبي بالكامل"
+        ],
+        correct: 1,
+        explanation: "Opt-out يعني خيار الرفض الصريح من المريض لمشاركة ملفه الطبي الإلكتروني مع أي طرف خارجي."
+      },
+      {
+        id: 6, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي من التالي يُعد جزءًا من \"السرية\" في نظام HIS؟",
+        options: [
+          "جعل السجلات متاحة للجميع",
+          "السماح فقط للمخولين برؤية بيانات المريض",
+          "إرسال نتائج الفحوصات عبر SMS",
+          "استخدام أسماء المرضى في قاعة الانتظار"
+        ],
+        correct: 1,
+        explanation: "السرية تعني حماية البيانات من الاطلاع غير المصرح به وقصر رؤيتها على الأشخاص المخولين فقط."
+      },
+      {
+        id: 7, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الهدف من استخدام \"القوالب الجاهزة\" (Templates) في التقارير؟",
+        options: [
+          "تقليل عدد الصفحات المطبوعة",
+          "ضمان التناسق والاحترافية في شكل التقارير",
+          "تسريع الطباعة فقط",
+          "إخفاء بيانات المريض"
+        ],
+        correct: 1,
+        explanation: "القوالب الجاهزة تضمن الشمولية، التوحيد المعياري، التناسق الشكلي، والاحترافية بين كافة التقارير الطبية."
+      },
+      {
+        id: 8, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي مما يلي يُعتبر مثالًا على \"الإبلاغ العام\"؟",
+        options: [
+          "إرسال نتيجة فحص لمريض عبر البريد",
+          "نشر نسبة الشفاء من جراحة القلب في مستشفى معين",
+          "إنشاء سجل طبي جديد",
+          "تغيير كلمة مرور النظام"
+        ],
+        correct: 1,
+        explanation: "الإبلاغ العام يتضمن نشر إحصائيات عامة أو مؤشرات أداء إجمالية بدون كشف أي بيانات شخصية للمرضى."
+      },
+      {
+        id: 9, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ماذا يجب أن تفعل إذا كتبت معلومة خاطئة في سجل المريض؟",
+        options: [
+          "تحذفها فورًا",
+          "تضيف ملاحظة تصحيح مع التاريخ والسبب",
+          "تتركها لأنها لا تهم",
+          "تطلب من المريض تصحيحها بنفسه"
+        ],
+        correct: 1,
+        explanation: "القاعدة الذهبية للسجلات الطبية: لا تحذف شيئاً إطلاقاً، بل أضف مدونة تصحيحية رسمية توضح الخطأ والتصحيح وتاريخ إجراء التعديل وهويتك."
+      },
+      {
+        id: 10, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي من هذه الأمراض يُصنف كـ \"مرض قابل للإبلاغ\"؟",
+        options: [
+          "الصداع النصفي",
+          "السل (Tuberculosis)",
+          "الحساسية الموسمية",
+          "آلام الظهر"
+        ],
+        correct: 1,
+        explanation: "المرض القابل للإبلاغ (Reportable Disease) هو المرض المعدي الذي يشكل خطراً على الصحة العامة وتلتزم المستشفيات قانوناً بإبلاغ السلطات الصحية عنه فوراً كالسل والكوليرا."
+      },
+      {
+        id: 11, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما أفضل طريقة لاختيار كلمة مرور قوية؟",
+        options: [
+          "استخدام اسمك وتاريخ ميلادك",
+          "استخدام عبارة طويلة تحتوي على رموز وأرقام",
+          "استخدام كلمة \"password123\"",
+          "كتابة كلمة مرور بسيطة وسهلة التذكر"
+        ],
+        correct: 1,
+        explanation: "كلمة المرور القوية تتطلب تعقيداً وطولاً مناسباً، وتضم مزيجاً من الحروف الكبيرة والصغيرة والأرقام والرموز الخاصة."
+      },
+      {
+        id: 12, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "لماذا لا يُسمح بمشاركة كلمة المرور مع الزملاء؟",
+        options: [
+          "لأن النظام لا يدعم أكثر من مستخدم",
+          "لأنك تتحمل المسؤولية عن كل ما يُفعل عبر حسابك",
+          "لأن الزملاء قد ينسونها",
+          "لأنها تبطئ النظام"
+        ],
+        correct: 1,
+        explanation: "كلمة المرور ترتبط بسجل التدقيق الشخصي؛ وأي إجراء يتم عبر حسابك يُحسب عليك قانونياً وإدارياً."
+      },
+      {
+        id: 13, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الذي يضمنه \"التوفر\" (Availability) في أمن المعلومات؟",
+        options: [
+          "أن تكون البيانات سرية تمامًا",
+          "أن تكون البيانات متاحة عند الحاجة للأشخاص المصرح لهم",
+          "أن لا يستطيع أحد تعديل البيانات",
+          "أن تكون البيانات مشفرة دائمًا"
+        ],
+        correct: 1,
+        explanation: "التوفر (Availability) يضمن أن الأنظمة والبيانات متاحة وجاهزة للاستخدام في الوقت الفعلي عند حاجة المخولين إليها."
+      },
+      {
+        id: 14, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي من التالي يُعتبر خطرًا على سرية البيانات؟",
+        options: [
+          "استخدام نظام الطباعة الآمن",
+          "ترك نتائج فحوصات مطبوعة على الطابعة",
+          "تغيير كلمة المرور كل 3 أشهر",
+          "استخدام بطاقة ذكية للدخول"
+        ],
+        correct: 1,
+        explanation: "ترك المستندات الطبية المطبوعة دون مراقبة يعرض سرية بيانات المريض للاطلاع غير المصرح به من المارين."
+      },
+      {
+        id: 15, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الهدف من \"فلترة السجلات\" في نظام HIS؟",
+        options: [
+          "حذف السجلات القديمة",
+          "عرض مجموعة من المرضى بناءً على معايير مشتركة",
+          "تغيير بيانات المريض",
+          "إنشاء سجلات مؤقتة"
+        ],
+        correct: 1,
+        explanation: "فلترة السجلات تساعد في البحث السريع وتصنيف المرضى حسب تشخيص أو عمر أو قسم أو تاريخ معين لاستخراج تقارير دقيقة."
+      },
+      {
+        id: 16, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "من يحق له إنشاء سجل طبي جديد في قسم الطوارئ؟",
+        options: [
+          "أي موظف في المستشفى",
+          "الطبيب أو الممرض المخوّل",
+          "المريض نفسه",
+          "مدير الموارد البشرية"
+        ],
+        correct: 1,
+        explanation: "إنشاء الملفات الطبية يتطلب صلاحية طاقم طبي مخول ومصرح له رسمياً للتعامل مع الحالات الصحية."
+      },
+      {
+        id: 17, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما معنى \"الموافقة المستنيرة\" (Informed Consent)؟",
+        options: [
+          "توقيع المريض على أي ورقة يُطلب منه",
+          "فهم المريض للعلاج والمخاطر قبل الموافقة",
+          "موافقة العائلة نيابة عن المريض",
+          "موافقة الطبيب فقط على العلاج"
+        ],
+        correct: 1,
+        explanation: "الموافقة المستنيرة تعني تزويد المريض بكافة تفاصيل الخطة العلاجية ومخاطرها وبدائلها حتى يوافق عن وعي وفهم كامل."
+      },
+      {
+        id: 18, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "أي من التالي يُعتبر جزءًا من \"السلامة\" (Integrity) في الأمن؟",
+        options: [
+          "إخفاء بيانات المريض",
+          "منع التغيير غير المصرح به للبيانات",
+          "جعل النظام متاحًا 24 ساعة",
+          "استخدام كلمات مرور بسيطة"
+        ],
+        correct: 1,
+        explanation: "السلامة (Integrity) تعني حماية البيانات من التعديل أو العبث أو التدمير غير المصرح به وضمان دقتها وصحتها."
+      },
+      {
+        id: 19, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الفائدة الرئيسية من السجلات الصحية الإلكترونية (EHR)؟",
+        options: [
+          "تقليل عدد الأطباء",
+          "توفير تاريخ طبي شامل لكل مريض",
+          "إلغاء الحاجة للفحوصات",
+          "جعل المريض يدفع أقل"
+        ],
+        correct: 1,
+        explanation: "السجل الصحي الإلكتروني EHR يجمع التاريخ الصحي الكامل للمريض عبر مختلف المراكز الصحية مما يضمن استمرارية ودقة الرعاية."
+      },
+      {
+        id: 20, part: 1, category: "المجموعة الأولى: المراجعة السريعة",
+        question: "ما الذي يميز \"سجلات السكان\" عن \"سجلات المرضى الشخصية\"؟",
+        options: [
+          "تحتوي على أسماء المرضى",
+          "تُستخدم للإحصاءات دون كشف الهوية",
+          "تُخزن في ملفات ورقية",
+          "لا تُستخدم في التخطيط الصحي"
+        ],
+        correct: 1,
+        explanation: "سجلات السكان (Population Records) يتم إخفاء الهوية الشخصية (Anonymization) منها لتُستخدم لأغراض الدراسة الإحصائية والتخطيط الصحي العام."
+      },
+
+      // PART 2 (50 QUESTIONS)
+      // Category 1: أساسيات HIS والسجل الإلكتروني (1-10)
+      {
+        id: 21, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "1. ما الهدف الأساسي من نظام المعلومات الصحية (HIS)؟",
+        options: [
+          "تقليل عدد الموظفين",
+          "تحسين جودة الرعاية الصحية من خلال إدارة البيانات",
+          "استبدال الأطباء بالذكاء الاصطناعي",
+          "بيع بيانات المرضى للشركات"
+        ],
+        correct: 1,
+        explanation: "الهدف الأساسي لنظام HIS هو رفع كفاءة وجودة الخدمات الصحية وتوفير البيانات الدقيقة لاتخاذ القرارات الطبية."
+      },
+      {
+        id: 22, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "2. أي مما يلي يُعتبر جزءًا من السجل الصحي الإلكتروني (EHR)؟",
+        options: [
+          "صورة شخصية فقط",
+          "خطة العلاج، التشخيص، نتائج الفحوصات",
+          "قائمة بأسماء أصدقاء المريض",
+          "سجل مالي للمستشفى"
+        ],
+        correct: 1,
+        explanation: "مكونات EHR تشمل كافة التفاصيل السريرية الحيوية كالتشخيصات، الفحوصات المخبرية والإشعاعية، والخطط العلاجية."
+      },
+      {
+        id: 23, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "3. ما الفرق بين EHR و EMR؟",
+        options: [
+          "لا يوجد فرق",
+          "EHR يُشارك بين مؤسسات، EMR داخلي فقط",
+          "EMR أكثر أمانًا",
+          "EHR ورقي، EMR إلكتروني"
+        ],
+        correct: 1,
+        explanation: "EMR يخص مؤسسة صحية واحدة فقط، بينما EHR مصمم لتبادل البيانات الطبية وسهولة مشاركتها بين مختلف المنشآت والمستشفيات."
+      },
+      {
+        id: 24, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "4. ما الذي يُساعد النظام في \"دعم اتخاذ القرار\"؟",
+        options: [
+          "إرسال رسائل تهنئة",
+          "عرض تنبيهات عند وجود تداخل دوائي",
+          "طباعة بطاقات مواعيد",
+          "حذف السجلات القديمة"
+        ],
+        correct: 1,
+        explanation: "أنظمة دعم القرار تحذر الطبيب آلياً عند وجود تعارضات بين الأدوية أو حساسيات معروفة لدى المريض."
+      },
+      {
+        id: 25, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "5. كيف يُحسّن HIS جودة الرعاية؟",
+        options: [
+          "بزيادة عدد الأسرّة",
+          "بتقليل الأخطاء الطبية عبر التحذيرات الآلية",
+          "بإلغاء الحاجة للفحوصات",
+          "بتأخير المواعيد"
+        ],
+        correct: 1,
+        explanation: "تقليل الخطأ البشري من خلال التحقق الذكي، التنبيهات المباشرة، وسهولة تتبع الملف الصحي ينعكس على سلامة المريض."
+      },
+      {
+        id: 26, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "6. ما الهدف من ربط بيانات السكان بسجلات المرضى؟",
+        options: [
+          "معرفة أسماء جميع المرضى",
+          "تحسين التخطيط الصحي على مستوى المجتمع",
+          "فرض ضرائب على المرضى",
+          "تقليل عدد الأطباء"
+        ],
+        correct: 1,
+        explanation: "ربط البيانات يساعد السلطات الصحية في التنبؤ بالأوبئة وتوزيع الموارد والخدمات الصحية بالشكل الأمثل."
+      },
+      {
+        id: 27, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "7. أي من التالي يُعد مثالًا على \"بيانات سكانية\"؟",
+        options: [
+          "اسم مريض مصاب بالسكري",
+          "نسبة انتشار السكري في منطقة معينة",
+          "رقم هوية مريض",
+          "نتيجة تحليل دم لشخص واحد"
+        ],
+        correct: 1,
+        explanation: "البيانات السكانية هي بيانات مجمعة وإحصائية تصف الظواهر الصحية لمجموعة أو منطقة دون التعرف على أفراد بعينهم."
+      },
+      {
+        id: 28, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "8. ما الفائدة من \"التنبيهات التلقائية\" في HIS؟",
+        options: [
+          "تذكير الموظفين برواتبهم",
+          "تذكير المرضى بالمواعيد أو اللقاحات",
+          "إرسال إعلانات تجارية",
+          "تحديث النظام تلقائيًا"
+        ],
+        correct: 1,
+        explanation: "التنبيهات التلقائية تحافظ على استمرارية الرعاية وتزيد من التزام المرضى بالمواعيد والجرعات الوقائية."
+      },
+      {
+        id: 29, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "9. ما الذي يميز السجل الطبي كـ \"وثيقة قانونية\"؟",
+        options: [
+          "يُكتب بخط اليد فقط",
+          "لا يمكن حذف أو تغيير محتواه دون تسجيل",
+          "يُخزن في خزنة حديدية",
+          "يُرسل للشرطة تلقائيًا"
+        ],
+        correct: 1,
+        explanation: "بصفتها وثيقة رسمية وقانونية أمام القضاء، يحظر إزالة أو تعديل مدخلات السجل الطبي ويجب توثيق أي تصحيح بسجل التدقيق."
+      },
+      {
+        id: 30, part: 2, category: "أساسيات HIS والسجل الإلكتروني",
+        question: "10. ما الذي يجب فعله عند اكتشاف سجلين لنفس المريض؟",
+        options: [
+          "حذف أحدهما فورًا",
+          "دمجهما عبر لجنة مختصة بعد التحقق",
+          "تركهما كما هما",
+          "إنشاء سجل ثالث"
+        ],
+        correct: 1,
+        explanation: "تكرار السجلات يعالج بالحذر والتحقق من الهوية ثم الدمج الرسمي لعدم ضياع أي تاريخ طبي معتمد."
+      },
+
+      // Category 2: السرية وحقوق المريض (11-20)
+      {
+        id: 31, part: 2, category: "السرية وحقوق المريض",
+        question: "11. ما حق المريض فيما يخص \"عدم المعرفة\"؟",
+        options: [
+          "رفض دفع الفواتير",
+          "رفض معرفة تشخيصه حتى لو كان خطيرًا",
+          "طلب علاج مجاني",
+          "منع الطبيب من رؤية سجله"
+        ],
+        correct: 1,
+        explanation: "من حق المريض المستقل أخلاقياً وقانونياً طلب عدم إبلاغه ببعض نتائج الفحوصات أو التشخيص خطير."
+      },
+      {
+        id: 32, part: 2, category: "السرية وحقوق المريض",
+        question: "12. متى يُسمح بمشاركة بيانات المريض مع العائلة؟",
+        options: [
+          "دائمًا",
+          "بموافقة المريض الصريحة",
+          "إذا طلب الطبيب ذلك",
+          "في كل حالات الطوارئ"
+        ],
+        correct: 1,
+        explanation: "بيانات المريض ملك له وحده، ولا تُشارك مع أقاربه إلا بإذن كتابي أو شفوي صريح منه."
+      },
+      {
+        id: 33, part: 2, category: "السرية وحقوق المريض",
+        question: "13. ما الذي يُعتبر انتهاكًا للسرية؟",
+        options: [
+          "استخدام نظام الطباعة الآمن",
+          "مناقشة حالة مريض في الممر",
+          "تغيير كلمة المرور دوريًا",
+          "استخدام بطاقة ذكية"
+        ],
+        correct: 1,
+        explanation: "الحديث عن بيانات المرضى في الأماكن العامة كالممرات والآسانسير يُعد انتهاكاً جسيماً للخصوصية والسرية."
+      },
+      {
+        id: 34, part: 2, category: "السرية وحقوق المريض",
+        question: "14. من يملك حق مراجعة وتصحيح السجل الطبي؟",
+        options: [
+          "مدير المستشفى فقط",
+          "المريض نفسه",
+          "وزارة الصحة فقط",
+          "أي طبيب في المستشفى"
+        ],
+        correct: 1,
+        explanation: "يحق للمريض الاطلاع على سجله الطبي وطلب تصحيح المعلومات غير الدقيقة المدوّنة فيه."
+      },
+      {
+        id: 35, part: 2, category: "السرية وحقوق المريض",
+        question: "15. ما معنى \"الحاجة إلى المعرفة\" (Need-to-Know)؟",
+        options: [
+          "كل موظف يجب أن يعرف كل شيء",
+          "الموظف يرى فقط ما يحتاجه لعمله",
+          "المريض يجب أن يعرف كل تفاصيل المرض",
+          "الطبيب يقرر من يرى البيانات"
+        ],
+        correct: 1,
+        explanation: "مبدأ Need-to-Know يضمن وصول المستخدم فقط للمعلومات الضروية لأداء مهامه الوظيفية الحالية."
+      },
+      {
+        id: 36, part: 2, category: "السرية وحقوق المريض",
+        question: "16. أي من التالي يُعتبر \"مرضًا قابلًا للإبلاغ\"؟",
+        options: [
+          "الزكام",
+          "الكوليرا",
+          "الصداع",
+          "الحساسية"
+        ],
+        correct: 1,
+        explanation: "الكوليرا مرض معدٍ وخطير يجب الإبلاغ الفوري عنه للجهات الصحية لحماية المجتمع."
+      },
+      {
+        id: 37, part: 2, category: "السرية وحقوق المريض",
+        question: "17. ما الذي يجب فعله قبل مناقشة حالة مريض؟",
+        options: [
+          "إرسال رسالة نصية له",
+          "التأكد من وجوده في مكان خاص",
+          "طلب إذن من المدير",
+          "استخدام مكبر صوت"
+        ],
+        correct: 1,
+        explanation: "الخصوصية تتطلب مناقشة الأمور الصحية في غرف مغلقة ومخصصة لتجنب تسرب المعلومات لأطراف أخرى."
+      },
+      {
+        id: 38, part: 2, category: "السرية وحقوق المريض",
+        question: "18. هل يُسمح بإعطاء بيانات المريض لصاحب العمل؟",
+        options: [
+          "نعم، دائمًا",
+          "لا، إلا إذا وافق المريض أو طلب القانون",
+          "نعم، إذا كان المريض موظفًا",
+          "لا، إلا في أيام العطل"
+        ],
+        correct: 1,
+        explanation: "لا يجوز تزويد جهات العمل بأي معلومات طبية إلا بموافقة صريحة من المريض أو بأمر قضائي."
+      },
+      {
+        id: 39, part: 2, category: "السرية وحقوق المريض",
+        question: "19. ما الذي يجب كتابته على المستندات الطبية عند إرسالها؟",
+        options: [
+          "\"عاجل\"",
+          "\"سرية\" أو \"Confidential\"",
+          "\"للاطلاع فقط\"",
+          "\"لا تفتح\""
+        ],
+        correct: 1,
+        explanation: "وسم المستند بكلمة 'سرية' يحذر المتعاملين مع الملف بضرورة الحفاظ على محتواه وعدم تسريبه."
+      },
+      {
+        id: 40, part: 2, category: "السرية وحقوق المريض",
+        question: "20. ما دور المترجم في الحفاظ على السرية؟",
+        options: [
+          "ترجمة كل شيء دون قيود",
+          "الالتزام بعدم مشاركة المعلومات خارج الجلسة",
+          "تسجيل المحادثة",
+          "إرسال الترجمة بالبريد"
+        ],
+        correct: 1,
+        explanation: "المترجم الطبي ملتزم بقواعد الأخلاقيات والسرية الطبية تماماً كالكادر الطبي المتخصص."
+      },
+
+      // Category 3: التحكم في الوصول (21-30)
+      {
+        id: 41, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "21. ما الذي يعتمد عليه \"التحكم في الوصول\"؟",
+        options: [
+          "عمر الموظف",
+          "دوره وواجباته ومسؤولياته",
+          "عدد سنوات الخبرة",
+          "راتبه الشهري"
+        ],
+        correct: 1,
+        explanation: "الوصول القائم على الأدوار (RBAC) يمنح الصلاحيات بناءً على الوظيفة الفعلية (طبيب، ممرض، صيدلي) وليس الأقدمية أو المكانة."
+      },
+      {
+        id: 42, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "22. أي من التالي يُعتبر \"عامل معرفة\" في المصادقة؟",
+        options: [
+          "البطاقة الذكية",
+          "كلمة المرور",
+          "بصمة الإصبع",
+          "جهاز الرمز (Token)"
+        ],
+        correct: 1,
+        explanation: "عوامل الأمان تنقسم لثلاثة: ما تعرفه (كلمة المرور/PIN)، ما تملكه (بطاقة)، وما تملكه في جسدك (بصمة)."
+      },
+      {
+        id: 43, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "23. ما الفائدة من استخدام \"البيومترية\"؟",
+        options: [
+          "سهولة النسيان",
+          "الاعتماد على هوية فريدة لا يمكن تقليدها",
+          "تقليل التكلفة",
+          "تسريع الطباعة"
+        ],
+        correct: 1,
+        explanation: "المصادقة البيومترية تستخدم الخصائص الفيزيائية الفريدة للشخص مما يمنع المشاركة والتزوير."
+      },
+      {
+        id: 44, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "24. كم مرة يجب تغيير كلمة المرور عادةً؟",
+        options: [
+          "كل سنة",
+          "كل 3–6 أشهر",
+          "عند تغيير الوظيفة فقط",
+          "لا حاجة لتغييرها"
+        ],
+        correct: 1,
+        explanation: "التغيير الدوري المتوازن لكلمات المرور كل بضعة أشهر يقلل من مخاطر اختراق الحسابات."
+      },
+      {
+        id: 45, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "25. ما الذي يجب فعله إذا شككت أن كلمة المرور مُسربة؟",
+        options: [
+          "الانتظار حتى يطلب المدير",
+          "تغييرها فورًا",
+          "إخبار الزملاء بها",
+          "استخدام نفس الكلمة مع رمز مختلف"
+        ],
+        correct: 1,
+        explanation: "التغيير الفوري لمنع استغلال الحساب وتنبيه إدارة الأمان هو التصرف الصحيح المباشر."
+      },
+      {
+        id: 46, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "26. ما معنى \"Opt-in\"؟",
+        options: [
+          "رفض مشاركة البيانات",
+          "الموافقة على مشاركة البيانات",
+          "حذف السجل",
+          "تغيير الهوية"
+        ],
+        correct: 1,
+        explanation: "Opt-in يمثل الموافقة الاختيارية الصريحة والإيجابية من المريض لمشاركة ملفاته أو الدخول في برنامج دراسي."
+      },
+      {
+        id: 47, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "27. أي من التالي يُعتبر \"عامل امتلاك\"؟",
+        options: [
+          "رقم التعريف الشخصي",
+          "البطاقة الذكية",
+          "الاسم الكامل",
+          "تاريخ الميلاد"
+        ],
+        correct: 1,
+        explanation: "البطاقة الذكية أو مفتاح الأمان المادي هو شيء يمتلكه المستخدم لإثبات هويته."
+      },
+      {
+        id: 48, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "28. ما الذي يمنعه \"أقصى عدد من المحاولات الخاطئة\"؟",
+        options: [
+          "نسيان كلمة المرور",
+          "الهجمات الآلية لتخمين كلمة المرور",
+          "دخول المدير",
+          "استخدام النظام في العطلات"
+        ],
+        correct: 1,
+        explanation: "قفل الحساب بعد عدة محاولات خاطئة يمنع هجمات القوة الغاشمة (Brute-Force Attacks) للتخمين الآلي."
+      },
+      {
+        id: 49, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "29. هل يُسمح بمشاركة كلمة المرور مع مدير النظام؟",
+        options: [
+          "نعم، دائمًا",
+          "لا، حتى مع المدير",
+          "نعم، إذا طلب ذلك",
+          "فقط في أيام الطوارئ"
+        ],
+        correct: 1,
+        explanation: "كلمة المرور شخصية سرية للغاية ولا يجوز كشفها لأي شخص مهما كانت مرتبته ووظيفته."
+      },
+      {
+        id: 50, part: 2, category: "التحكم في الوصول والمصادقة",
+        question: "30. ما الهدف من \"سياسة كلمات المرور\"؟",
+        options: [
+          "جعل النظام أبطأ",
+          "توحيد معايير الأمان لجميع المستخدمين",
+          "منع الموظفين من الدخول",
+          "تقليل عدد الحسابات"
+        ],
+        correct: 1,
+        explanation: "السياسة تفرض معايير واضحة (الطول، التعقيد، فترة الصلاحية) لمنع استخدام كلمات سر ضعيفة في كافة أجزاء النظام."
+      },
+
+      // Category 4: أمن المعلومات (31-40)
+      {
+        id: 51, part: 2, category: "أمن المعلومات والصيانة",
+        question: "31. ما الأعمدة الثلاثة للأمن في HIS؟",
+        options: [
+          "السرعة، الدقة، التوفر",
+          "السرية، السلامة، التوفر",
+          "التشفير، الطباعة، الإرسال",
+          "الدخول، الخروج، التعديل"
+        ],
+        correct: 1,
+        explanation: "مثلث أمن المعلومات الأساسي يتكون من: السرية (Confidentiality)، السلامة (Integrity)، والتوفر (Availability)."
+      },
+      {
+        id: 52, part: 2, category: "أمن المعلومات والصيانة",
+        question: "32. ما معنى \"السلامة\" (Integrity) في الأمن؟",
+        options: [
+          "إخفاء البيانات",
+          "ضمان دقة البيانات ومنع التغيير غير المصرح به",
+          "جعل النظام متاحًا 24 ساعة",
+          "استخدام كلمات مرور قصيرة"
+        ],
+        correct: 1,
+        explanation: "السلامة تضمن أن البيانات الطبية حقيقية ولم يتم إتلافها أو تزويرها أو تغييرها بأي وسيلة غير شرعية."
+      },
+      {
+        id: 53, part: 2, category: "أمن المعلومات والصيانة",
+        question: "33. ما الذي يجب أن يحتويه \"سجل التدقيق\"؟",
+        options: [
+          "أسماء أصدقاء المريض",
+          "من فعل ماذا ومتى ومن أين",
+          "أسعار الأدوية",
+          "جداول رواتب الموظفين"
+        ],
+        correct: 1,
+        explanation: "سجل التدقيق يتضمن الإجابة التفصيلية عن: Who, What, When, Where لكافة الأحداث والعمليات داخل النظام."
+      },
+      {
+        id: 54, part: 2, category: "أمن المعلومات والصيانة",
+        question: "34. ما الذي يُعتبر خطرًا على الأمن؟",
+        options: [
+          "استخدام نظام الطباعة الآمن",
+          "كتابة كلمة المرور على ورقة وتركها على المكتب",
+          "تغيير كلمة المرور دوريًا",
+          "استخدام بطاقة ذكية"
+        ],
+        correct: 1,
+        explanation: "تدوين كلمة المرور وتركها في مكان مكشوف يُعد إهمالاً أمنياً خطيراً يسهل عملية الاختراق."
+      },
+      {
+        id: 55, part: 2, category: "أمن المعلومات والصيانة",
+        question: "35. ما الهدف من \"الالتزام الرسمي بسياسة الأمن\"؟",
+        options: [
+          "تقليل الرواتب",
+          "جعل كل موظف مسؤولًا عن حماية البيانات",
+          "منع استخدام الحاسوب",
+          "إلغاء السجلات الإلكترونية"
+        ],
+        correct: 1,
+        explanation: "الالتزام يعزز الوعي الأمني ويحمل كل موظف تبعات أي إخلال بإجراءات حماية البيانات."
+      },
+      {
+        id: 56, part: 2, category: "أمن المعلومات والصيانة",
+        question: "36. ما الذي يجب فعله عند فقدان جهاز يحتوي على بيانات مرضى؟",
+        options: [
+          "شراء جهاز جديد",
+          "إبلاغ الإدارة فورًا",
+          "الانتظار حتى يُعاد",
+          "تجاهل الأمر"
+        ],
+        correct: 1,
+        explanation: "الإبلاغ الفوري يُمكّن فريق IT من إغلاق الحسابات ومسح البيانات عن بُعد (Remote Wipe) لمنع التسريب."
+      },
+      {
+        id: 57, part: 2, category: "أمن المعلومات والصيانة",
+        question: "37. ما معنى \"التشفير\" في نقل البيانات؟",
+        options: [
+          "حذف البيانات",
+          "تحويل البيانات إلى شفرة لا يفهمها إلا المصرح له",
+          "طباعتها بخط صغير",
+          "إرسالها عبر البريد العادي"
+        ],
+        correct: 1,
+        explanation: "التشفير يحمي البيانات أثناء الانتقال عبر الشبكة من التلصص أو الاعتراض، حيث يحولها لرموز غير مفهومة بدون مفتاح التفكيك."
+      },
+      {
+        id: 58, part: 2, category: "أمن المعلومات والصيانة",
+        question: "38. أي من التالي يُعتبر \"سياسة أمنية\"؟",
+        options: [
+          "عدد ساعات العمل",
+          "أدنى طول لكلمة المرور",
+          "لون الزي الموحد",
+          "مكان الاستراحة"
+        ],
+        correct: 1,
+        explanation: "تحديد الحد الأدنى لطول كلمة المرور وشروط تعقيدها هو بند تنظيمي وأمني مباشر ضمن سياسات الأمان."
+      },
+      {
+        id: 59, part: 2, category: "أمن المعلومات والصيانة",
+        question: "39. ما الذي يحميه \"التوفر\" (Availability)؟",
+        options: [
+          "سرية المريض",
+          "وصول المصرح لهم للبيانات عند الحاجة",
+          "دقة التشخيص",
+          "سرعة الطباعة"
+        ],
+        correct: 1,
+        explanation: "ضمان عمل السيرفرات والأنظمة دون انقطاع حتى يتمكن الأطباء والممرضون من أداء مهامهم الطارئة."
+      },
+      {
+        id: 60, part: 2, category: "أمن المعلومات والصيانة",
+        question: "40. ما الذي يجب فعله قبل مغادرة الكمبيوتر؟",
+        options: [
+          "إغلاق النافذة فقط",
+          "قفل الشاشة أو تسجيل الخروج",
+          "تركه مفتوحًا للزملاء",
+          "إيقاف تشغيل الطابعة"
+        ],
+        correct: 1,
+        explanation: "قفل الشاشة (Lock Screen) يمنع أي شخص غريب من استغلال حسابك المفتوح أثناء غيابك."
+      },
+
+      // Category 5: التقارير ودعم القرار (41-50)
+      {
+        id: 61, part: 2, category: "التقارير ودعم القرار",
+        question: "41. ما الهدف من \"الاستعلام\" (Query) في HIS؟",
+        options: [
+          "حذف السجلات",
+          "استرجاع بيانات محددة بناءً على معايير",
+          "تغيير بيانات المريض",
+          "إرسال بريد جماعي"
+        ],
+        correct: 1,
+        explanation: "الاستعلام يتيح فلترة قاعدة البيانات واستعراض معلومات مخصصة حسب شروط محددة (كاستخراج مرضى قسم معين)."
+      },
+      {
+        id: 62, part: 2, category: "التقارير ودعم القرار",
+        question: "42. ما الذي يُظهره \"تعداد الوحدة العلاجية\"؟",
+        options: [
+          "أسماء أطباء الطوارئ",
+          "متوسط عدد الأسرّة المشغولة ومدة الإقامة",
+          "رواتب الموظفين",
+          "قائمة الأدوية الممنوعة"
+        ],
+        correct: 1,
+        explanation: "التعداد العلاجي يقدم بيانات تشغيلية حية عن نسبة أشغال الأسرّة، معدل الإقامة، وحركة المرضى داخل الوحدة."
+      },
+      {
+        id: 63, part: 2, category: "التقارير ودعم القرار",
+        question: "43. ما الفائدة من \"قوائم الانتظار\"؟",
+        options: [
+          "زيادة التكاليف",
+          "تحديد الأولوية بناءً على الحالة الصحية",
+          "تأخير العلاج للجميع",
+          "إخفاء أسماء المرضى"
+        ],
+        correct: 1,
+        explanation: "إدارة قوائم الانتظار تضمن توجيه الموارد الطبية للحالات الأشد خطورة وأولوية (Triage)."
+      },
+      {
+        id: 64, part: 2, category: "التقارير ودعم القرار",
+        question: "44. ما الذي يجب أن يحتويه تقرير العمليات؟",
+        options: [
+          "أسماء أفراد عائلة المريض",
+          "تاريخ العملية، نوعها، المدة، الطبيب",
+          "قائمة الطعام اليومي",
+          "أسعار الأدوية"
+        ],
+        correct: 1,
+        explanation: "تقرير الجراحة ينبغي أن يكون شاملاً للتفاصيل السريرية والفريق الجراحي المعالج والتوقيت بدقة."
+      },
+      {
+        id: 65, part: 2, category: "التقارير ودعم القرار",
+        question: "45. كيف يُرسل تقرير طبي بأمان؟",
+        options: [
+          "عبر SMS",
+          "عبر بريد مشفر أو نظام داخلي آمن",
+          "عبر واتساب",
+          "عبر بريد عادي"
+        ],
+        correct: 1,
+        explanation: "تداول التقارير الطبية يتطلب قنوات نقل مشفرة ومحمية تمنع اعتراض البيانات أو الوصول غير المصرح."
+      },
+      {
+        id: 66, part: 2, category: "التقارير ودعم القرار",
+        question: "46. ما الذي يمنعه \"نظام الطباعة الآمن\"؟",
+        options: [
+          "طباعة التقارير",
+          "وصول غير المصرح لهم إلى الأوراق المطبوعة",
+          "استخدام الطابعة",
+          "طباعة أكثر من صفحة"
+        ],
+        correct: 1,
+        explanation: "الطباعة الآمنة تتطلب إدخال PIN أو بطاقة عند الطابعة لخروج المستند مباشرة أمام صاحبه لمنع نسيان الأوراق."
+      },
+      {
+        id: 67, part: 2, category: "التقارير ودعم القرار",
+        question: "47. ما الذي يُستخدم لعرض نتائج فحوصات مريض معين؟",
+        options: [
+          "قائمة الانتظار",
+          "تقرير محدد بناءً على رقم المريض",
+          "تعداد الوحدة",
+          "سجل التدقيق"
+        ],
+        correct: 1,
+        explanation: "باستخدام المعرف الفريد للمريض (Patient ID) يمكن استخراج التقرير الخاص به بدقة ودون اختلاط بمرضى آخرين."
+      },
+      {
+        id: 68, part: 2, category: "التقارير ودعم القرار",
+        question: "48. ما الهدف من \"القوالب الجاهزة\"؟",
+        options: [
+          "تقليل عدد الصفحات",
+          "ضمان تناسق شكل التقارير",
+          "إخفاء بيانات المريض",
+          "تسريع الطباعة فقط"
+        ],
+        correct: 1,
+        explanation: "القوالب المعيارية تسهل القراءة والسحب السريع للمعلومات وتمنع إسقاط البيانات الهامة."
+      },
+      {
+        id: 69, part: 2, category: "التقارير ودعم القرار",
+        question: "49. ما الذي يُمكن أن يفعله النظام عند اكتشاف خطأ في إدخال البيانات؟",
+        options: [
+          "حذف السجل",
+          "إظهار تحذير ويطلب التحقق",
+          "إرسال بريد للمريض",
+          "إغلاق النظام"
+        ],
+        correct: 1,
+        explanation: "التحقق الذكي (Data Validation) ينبه المدخل بقيم خارج النطاق الطبيعي قبل الاعتماد للحماية من الأخطاء."
+      },
+      {
+        id: 70, part: 2, category: "التقارير ودعم القرار",
+        question: "50. ما الذي يُعتبر \"دعمًا لاتخاذ القرار\"؟",
+        options: [
+          "إرسال إعلانات",
+          "عرض مقارنة بين فعالية علاجين بناءً على بيانات سابقة",
+          "طباعة بطاقات مواعيد",
+          "تغيير لون الواجهة"
+        ],
+        correct: 1,
+        explanation: "CDS يُزود الكادر الطبي بالتحليلات والمقارنات العلمية المبنية على الأدلة والبيانات المتاحة لمساعدتهم في اتخاذ الخيار العلاجي الأنسب."
       }
-    };
-  }
+    ];
 
-  function resetData() {
-    try {
-      if (window.confirm && !window.confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) {
-        return;
+    // --- APP STATE MANAGEMENT ---
+    let activeQuestions = [...rawQuestions];
+    let currentIndex = 0;
+    let userAnswers = {}; // { qId: optionIndex }
+    let flaggedQuestions = new Set();
+    let currentMode = 'study'; // 'study' or 'exam'
+    let soundEnabled = true;
+    let examTimerInterval = null;
+    let timerSecondsLeft = 45 * 60; // 45 minutes default
+    let timeElapsedSeconds = 0;
+    let elapsedTimerInterval = null;
+
+    // --- WEB AUDIO API SYNTHESIZER ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
       }
-    } catch(e) {}
-    data = emptyData();
-    save();
-    render();
-    restoreTabs();
-  }
-  window.resetData = resetData;
+    }
 
-  function save() {
-    setStorage(KEY, JSON.stringify(data));
-  }
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-  function load() {
-    try {
-      var saved = getStorage(KEY);
+        const now = audioCtx.currentTime;
+
+        if (type === 'correct') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now); // C5
+          osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15); // E5
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now); // A3
+          osc.frequency.linearRampToValueAtTime(164.81, now + 0.2); // E3
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, now);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        }
+      } catch (e) {
+        console.log("Audio not supported or blocked", e);
+      }
+    }
+
+    // --- LOCAL STORAGE PERSISTENCE ---
+    function saveState() {
+      const data = {
+        userAnswers,
+        flaggedQuestions: Array.from(flaggedQuestions),
+        currentMode,
+        soundEnabled,
+        currentIndex
+      };
+      localStorage.setItem('his_quiz_state', JSON.stringify(data));
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem('his_quiz_state');
       if (saved) {
-        var parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object' && parsed.russian && parsed.egyptian) {
-          if (Array.isArray(parsed.russian.small) && Array.isArray(parsed.russian.large) &&
-              Array.isArray(parsed.egyptian.small) && Array.isArray(parsed.egyptian.large)) {
-            data = parsed;
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.userAnswers) userAnswers = parsed.userAnswers;
+          if (parsed.flaggedQuestions) flaggedQuestions = new Set(parsed.flaggedQuestions);
+          if (parsed.currentMode) currentMode = parsed.currentMode;
+          if (typeof parsed.soundEnabled === 'boolean') soundEnabled = parsed.soundEnabled;
+          if (typeof parsed.currentIndex === 'number') currentIndex = parsed.currentIndex;
+        } catch(e) {}
+      }
+    }
+
+    // --- UI ELEMENTS ---
+    const qCategoryBadge = document.getElementById('qCategoryBadge');
+    const qText = document.getElementById('qText');
+    const optionsGrid = document.getElementById('optionsGrid');
+    const explanationBox = document.getElementById('explanationBox');
+    const explanationText = document.getElementById('explanationText');
+    const flagQuestionBtn = document.getElementById('flagQuestionBtn');
+    const flagBtnText = document.getElementById('flagBtnText');
+    const flaggedCount = document.getElementById('flaggedCount');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const finishExamBtn = document.getElementById('finishExamBtn');
+    const progressTextVal = document.getElementById('progressTextVal');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const sectionSelect = document.getElementById('sectionSelect');
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const timerContainer = document.getElementById('timerContainer');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+    // --- EVENT LISTENERS & INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      updateThemeIcon();
+      updateSoundIcon();
+      updateModeUI();
+
+      filterQuestions();
+      renderQuestion();
+      updateProgress();
+
+      // Sound Toggle
+      soundToggleBtn.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        updateSoundIcon();
+        saveState();
+      });
+
+      // Dark Mode Toggle
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.body.removeAttribute('data-theme');
+          localStorage.setItem('his_quiz_theme', 'light');
+        } else {
+          document.body.setAttribute('data-theme', 'dark');
+          localStorage.setItem('his_quiz_theme', 'dark');
+        }
+        updateThemeIcon();
+      });
+
+      // Load Saved Theme
+      if (localStorage.getItem('his_quiz_theme') === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        updateThemeIcon();
+      }
+
+      // Tips Accordion
+      document.getElementById('tipsToggleHeader').addEventListener('click', () => {
+        const content = document.getElementById('tipsContent');
+        const arrow = document.getElementById('tipsArrow');
+        if (content.style.display === 'none') {
+          content.style.display = 'grid';
+          arrow.textContent = '▲';
+        } else {
+          content.style.display = 'none';
+          arrow.textContent = '▼';
+        }
+      });
+
+      // Filter Change
+      sectionSelect.addEventListener('change', () => {
+        filterQuestions();
+        currentIndex = 0;
+        renderQuestion();
+        updateProgress();
+      });
+
+      // Mode switch buttons
+      modeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          modeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentMode = btn.getAttribute('data-mode');
+          updateModeUI();
+          renderQuestion();
+          saveState();
+        });
+      });
+
+      // Navigation
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          renderQuestion();
+          updateProgress();
+          playSound('click');
+        }
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < activeQuestions.length - 1) {
+          currentIndex++;
+          renderQuestion();
+          updateProgress();
+          playSound('click');
+        }
+      });
+
+      // Flag question
+      flagQuestionBtn.addEventListener('click', () => {
+        const qId = activeQuestions[currentIndex].id;
+        if (flaggedQuestions.has(qId)) {
+          flaggedQuestions.delete(qId);
+        } else {
+          flaggedQuestions.add(qId);
+        }
+        updateFlagUI();
+        saveState();
+        playSound('click');
+      });
+
+      // Shuffle
+      document.getElementById('shuffleBtn').addEventListener('click', () => {
+        if (confirm('هل ترغب في إعادة ترتيب الأسئلة والأجوبة عشوائياً؟')) {
+          activeQuestions.sort(() => Math.random() - 0.5);
+          currentIndex = 0;
+          renderQuestion();
+          updateProgress();
+        }
+      });
+
+      // Filter Flagged Only
+      document.getElementById('filterFlaggedBtn').addEventListener('click', () => {
+        if (flaggedQuestions.size === 0) {
+          alert('لا توجد أسئلة معلمة بعلامة مرجعية حالياً.');
+          return;
+        }
+        activeQuestions = rawQuestions.filter(q => flaggedQuestions.has(q.id));
+        currentIndex = 0;
+        renderQuestion();
+        updateProgress();
+      });
+
+      // Reset
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        if (confirm('هل أنت تأكد من إعادة ضبط الإجابات والتقدم بالكامل؟')) {
+          userAnswers = {};
+          flaggedQuestions.clear();
+          localStorage.removeItem('his_quiz_state');
+          filterQuestions();
+          currentIndex = 0;
+          renderQuestion();
+          updateProgress();
+          document.getElementById('resultsCard').classList.remove('active');
+          document.getElementById('quizContainer').style.display = 'block';
+        }
+      });
+
+      // Finish Exam
+      finishExamBtn.addEventListener('click', () => {
+        const unansweredCount = activeQuestions.filter(q => userAnswers[q.id] === undefined).length;
+        if (unansweredCount > 0 && currentMode === 'exam') {
+          if (!confirm(`لديك ${unansweredCount} سؤال لم تجب عليها بعد. هل ترغب في إنهاء الاختبار وتصحيحه الآن؟`)) {
             return;
           }
         }
-      }
-    } catch(e) {}
-    data = newData();
-  }
+        showResults();
+      });
 
-  function restoreTabs() {
-    var btns = document.querySelectorAll('.tab-btn');
-    for (var i = 0; i < btns.length; i++) {
-      if (btns[i].getAttribute('data-tab') === currentTab) {
-        btns[i].className = 'tab-btn active';
-      } else {
-        btns[i].className = 'tab-btn';
-      }
-    }
-    var tabs = document.querySelectorAll('.tab-content');
-    for (var i = 0; i < tabs.length; i++) {
-      if (tabs[i].id === 'tab-' + currentTab) {
-        tabs[i].className = 'tab-content active';
-      } else {
-        tabs[i].className = 'tab-content';
-      }
-    }
-  }
+      // Grid Modal
+      document.getElementById('gridModalOpenBtn').addEventListener('click', openGridModal);
+      document.getElementById('gridModalCloseBtn').addEventListener('click', closeGridModal);
+      document.getElementById('gridModal').addEventListener('click', (e) => {
+        if (e.target.id === 'gridModal') closeGridModal();
+      });
 
-  // Tab click handling via delegation
-  var tabsContainer = document.getElementById('tabs');
-  if (tabsContainer) {
-    tabsContainer.addEventListener('click', function(e) {
-      if (e.target.classList.contains('tab-btn')) {
-        var btns = document.querySelectorAll('.tab-btn');
-        for (var i = 0; i < btns.length; i++) btns[i].className = 'tab-btn';
-        e.target.className = 'tab-btn active';
-        currentTab = e.target.getAttribute('data-tab');
-        var tabs = document.querySelectorAll('.tab-content');
-        for (var i = 0; i < tabs.length; i++) tabs[i].className = 'tab-content';
-        var activeTab = document.getElementById('tab-' + currentTab);
-        if (activeTab) activeTab.className = 'tab-content active';
-      }
+      // Retake Exam
+      document.getElementById('retakeBtn').addEventListener('click', () => {
+        userAnswers = {};
+        document.getElementById('resultsCard').classList.remove('active');
+        document.getElementById('quizContainer').style.display = 'block';
+        currentIndex = 0;
+        renderQuestion();
+        updateProgress();
+        if (currentMode === 'exam') startExamTimer();
+      });
+
+      // Toggle Review List
+      document.getElementById('toggleReviewBtn').addEventListener('click', () => {
+        const list = document.getElementById('answerReviewList');
+        if (list.style.display === 'none') {
+          list.style.display = 'block';
+          renderAnswerReview();
+        } else {
+          list.style.display = 'none';
+        }
+      });
+
+      // Print Report
+      document.getElementById('printReportBtn').addEventListener('click', () => {
+        window.print();
+      });
     });
-  }
 
-  // Action buttons
-  document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('add-row-btn')) {
-      var k = e.target.getAttribute('data-addk');
-      var sec = e.target.getAttribute('data-addsec');
-      addRow(k, sec);
-    } else if (e.target.classList.contains('btn-reset')) {
-      resetData();
+    // --- FILTER LOGIC ---
+    function filterQuestions() {
+      const val = sectionSelect.value;
+      if (val === 'all') {
+        activeQuestions = [...rawQuestions];
+      } else if (val === 'part1') {
+        activeQuestions = rawQuestions.filter(q => q.part === 1);
+      } else if (val === 'part2') {
+        activeQuestions = rawQuestions.filter(q => q.part === 2);
+      } else if (val === 'cat1') {
+        activeQuestions = rawQuestions.filter(q => q.category.includes('أساسيات HIS'));
+      } else if (val === 'cat2') {
+        activeQuestions = rawQuestions.filter(q => q.category.includes('السرية وحقوق المريض'));
+      } else if (val === 'cat3') {
+        activeQuestions = rawQuestions.filter(q => q.category.includes('التحكم في الوصول'));
+      } else if (val === 'cat4') {
+        activeQuestions = rawQuestions.filter(q => q.category.includes('أمن المعلومات'));
+      } else if (val === 'cat5') {
+        activeQuestions = rawQuestions.filter(q => q.category.includes('التقارير ودعم القرار'));
+      }
     }
-  });
 
-  load();
-  render();
+    // --- RENDER QUESTION CARD ---
+    function renderQuestion() {
+      if (activeQuestions.length === 0) {
+        qText.textContent = "لا توجد أسئلة تطابق الفلتر المحدد.";
+        optionsGrid.innerHTML = "";
+        return;
+      }
 
-  // Dark mode toggle
-  var darkToggle = document.getElementById('darkToggle');
-  var isDark = getStorage('wb_dark') === '1';
-  function applyDark(d) {
-    if (d) {
-      document.body.classList.add('dark-mode');
-      if (darkToggle) darkToggle.textContent = '☀️';
-    } else {
-      document.body.classList.remove('dark-mode');
-      if (darkToggle) darkToggle.textContent = '🌙';
+      const q = activeQuestions[currentIndex];
+      qCategoryBadge.textContent = q.category;
+      qText.textContent = q.question;
+
+      // Update Options
+      optionsGrid.innerHTML = "";
+      const letters = ['أ', 'ب', 'ج', 'د'];
+      const currentAnswer = userAnswers[q.id];
+
+      q.options.forEach((optText, idx) => {
+        const item = document.createElement('div');
+        item.className = 'option-item';
+        if (currentAnswer === idx) {
+          item.classList.add('selected');
+        }
+
+        // Reveal answers immediately in study mode if already answered
+        if (currentMode === 'study' && currentAnswer !== undefined) {
+          item.classList.add('disabled');
+          if (idx === q.correct) {
+            item.classList.add('correct-answer');
+          } else if (currentAnswer === idx && currentAnswer !== q.correct) {
+            item.classList.add('wrong-answer');
+          }
+        }
+
+        item.innerHTML = `
+          <div class="option-key">${letters[idx]}</div>
+          <div class="option-content">${optText}</div>
+        `;
+
+        item.addEventListener('click', () => {
+          if (currentMode === 'study' && currentAnswer !== undefined) return; // Locked in study mode after selection
+
+          userAnswers[q.id] = idx;
+          saveState();
+
+          if (currentMode === 'study') {
+            if (idx === q.correct) {
+              playSound('correct');
+            } else {
+              playSound('wrong');
+            }
+          } else {
+            playSound('click');
+          }
+
+          renderQuestion();
+          updateProgress();
+        });
+
+        optionsGrid.appendChild(item);
+      });
+
+      // Explanation Box in Study Mode
+      if (currentMode === 'study' && currentAnswer !== undefined) {
+        explanationBox.classList.add('active');
+        explanationText.textContent = q.explanation;
+      } else {
+        explanationBox.classList.remove('active');
+      }
+
+      updateFlagUI();
+      updateNavButtons();
     }
-    setStorage('wb_dark', d ? '1' : '0');
-  }
-  applyDark(isDark);
-  if (darkToggle) {
-    darkToggle.addEventListener('click', function() {
-      isDark = !isDark;
-      applyDark(isDark);
-    });
-  }
-})();
-</script>
+
+    function updateNavButtons() {
+      prevBtn.disabled = currentIndex === 0;
+      prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+
+      if (currentIndex === activeQuestions.length - 1) {
+        nextBtn.style.display = 'none';
+        finishExamBtn.style.display = 'inline-flex';
+      } else {
+        nextBtn.style.display = 'inline-flex';
+        finishExamBtn.style.display = 'inline-flex';
+      }
+    }
+
+    function updateFlagUI() {
+      const qId = activeQuestions[currentIndex].id;
+      const isFlagged = flaggedQuestions.has(qId);
+      if (isFlagged) {
+        flagQuestionBtn.classList.add('flagged');
+        flagBtnText.textContent = "مُعلم بعلامة";
+      } else {
+        flagQuestionBtn.classList.remove('flagged');
+        flagBtnText.textContent = "تعليم السؤال";
+      }
+      flaggedCount.textContent = flaggedQuestions.size;
+    }
+
+    function updateProgress() {
+      const total = activeQuestions.length;
+      const answeredCount = activeQuestions.filter(q => userAnswers[q.id] !== undefined).length;
+      const percent = total > 0 ? Math.round((answeredCount / total) * 100) : 0;
+
+      progressTextVal.textContent = `السؤال ${currentIndex + 1} من ${total} (أجبت ${answeredCount} من ${total})`;
+      progressBarFill.style.width = `${percent}%`;
+    }
+
+    function updateModeUI() {
+      modeBtns.forEach(btn => {
+        if (btn.getAttribute('data-mode') === currentMode) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if (currentMode === 'exam') {
+        timerContainer.style.display = 'flex';
+        startExamTimer();
+      } else {
+        timerContainer.style.display = 'none';
+        clearInterval(examTimerInterval);
+      }
+    }
+
+    function updateThemeIcon() {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+    }
+
+    function updateSoundIcon() {
+      soundToggleBtn.textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    // --- TIMERS ---
+    function startExamTimer() {
+      clearInterval(examTimerInterval);
+      clearInterval(elapsedTimerInterval);
+
+      timerSecondsLeft = activeQuestions.length * 60; // 1 minute per question
+      timeElapsedSeconds = 0;
+
+      elapsedTimerInterval = setInterval(() => {
+        timeElapsedSeconds++;
+      }, 1000);
+
+      examTimerInterval = setInterval(() => {
+        timerSecondsLeft--;
+        if (timerSecondsLeft <= 0) {
+          clearInterval(examTimerInterval);
+          alert('⏰ انتهى الوقت المحدد للاختبار!');
+          showResults();
+        }
+        const mins = Math.floor(timerSecondsLeft / 60);
+        const secs = timerSecondsLeft % 60;
+        timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    // --- MATRIX MODAL LOGIC ---
+    function openGridModal() {
+      const grid = document.getElementById('qMatrixGrid');
+      grid.innerHTML = "";
+
+      activeQuestions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'q-matrix-btn';
+        btn.textContent = idx + 1;
+
+        if (idx === currentIndex) btn.classList.add('active');
+
+        const ans = userAnswers[q.id];
+        if (ans !== undefined) {
+          btn.classList.add('answered');
+          if (currentMode === 'study') {
+            if (ans === q.correct) btn.classList.add('correct');
+            else btn.classList.add('wrong');
+          }
+        }
+
+        if (flaggedQuestions.has(q.id)) {
+          const dot = document.createElement('span');
+          dot.className = 'flag-dot';
+          btn.appendChild(dot);
+        }
+
+        btn.addEventListener('click', () => {
+          currentIndex = idx;
+          renderQuestion();
+          updateProgress();
+          closeGridModal();
+        });
+
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('gridModal').classList.add('active');
+    }
+
+    function closeGridModal() {
+      document.getElementById('gridModal').classList.remove('active');
+    }
+
+    // --- RESULTS SCREEN LOGIC ---
+    function showResults() {
+      clearInterval(examTimerInterval);
+      clearInterval(elapsedTimerInterval);
+
+      document.getElementById('quizContainer').style.display = 'none';
+      const resultsCard = document.getElementById('resultsCard');
+      resultsCard.classList.add('active');
+
+      let correctCount = 0;
+      let wrongCount = 0;
+      let unansweredCount = 0;
+
+      activeQuestions.forEach(q => {
+        const ans = userAnswers[q.id];
+        if (ans === undefined) {
+          unansweredCount++;
+        } else if (ans === q.correct) {
+          correctCount++;
+        } else {
+          wrongCount++;
+        }
+      });
+
+      const total = activeQuestions.length;
+      const scorePct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+      document.getElementById('scorePercent').textContent = `${scorePct}%`;
+      document.getElementById('statCorrect').textContent = correctCount;
+      document.getElementById('statWrong').textContent = wrongCount;
+      document.getElementById('statUnanswered').textContent = unansweredCount;
+
+      const mins = Math.floor(timeElapsedSeconds / 60);
+      const secs = timeElapsedSeconds % 60;
+      document.getElementById('statTime').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      // Verdict
+      const verdict = document.getElementById('scoreVerdict');
+      if (scorePct >= 90) {
+        verdict.textContent = "ممتاز جداً (متفوق) 🎉";
+        verdict.style.color = "var(--success)";
+      } else if (scorePct >= 75) {
+        verdict.textContent = "جيد جداً (ناجح) 👏";
+        verdict.style.color = "var(--primary)";
+      } else if (scorePct >= 60) {
+        verdict.textContent = "مقبول (مرضي) 👍";
+        verdict.style.color = "var(--warning)";
+      } else {
+        verdict.textContent = "يحتاج إلى مراجعة وتكرار ⚠️";
+        verdict.style.color = "var(--danger)";
+      }
+
+      // Animate SVG Gauge
+      const circle = document.getElementById('scoreCircleFill');
+      const offset = 440 - (440 * scorePct / 100);
+      circle.style.strokeDashoffset = offset;
+
+      // Section Breakdown
+      renderSectionBreakdown();
+    }
+
+    function renderSectionBreakdown() {
+      const categories = {};
+      activeQuestions.forEach(q => {
+        if (!categories[q.category]) {
+          categories[q.category] = { total: 0, correct: 0 };
+        }
+        categories[q.category].total++;
+        if (userAnswers[q.id] === q.correct) {
+          categories[q.category].correct++;
+        }
+      });
+
+      const container = document.getElementById('sectionBreakdownList');
+      container.innerHTML = "";
+
+      Object.keys(categories).forEach(cat => {
+        const item = categories[cat];
+        const pct = Math.round((item.correct / item.total) * 100);
+
+        const el = document.createElement('div');
+        el.className = 'sec-item';
+        el.innerHTML = `
+          <div class="sec-meta">
+            <span>${cat}</span>
+            <span>${pct}% (${item.correct}/${item.total})</span>
+          </div>
+          <div class="sec-bar-bg">
+            <div class="sec-bar-fill" style="width: ${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    function renderAnswerReview() {
+      const container = document.getElementById('reviewItemsContainer');
+      container.innerHTML = "";
+      const letters = ['أ', 'ب', 'ج', 'د'];
+
+      activeQuestions.forEach((q, idx) => {
+        const userAns = userAnswers[q.id];
+        const isCorrect = userAns === q.correct;
+
+        const card = document.createElement('div');
+        card.className = 'review-item';
+        card.style.borderLeft = `5px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'}`;
+
+        const userAnsText = userAns !== undefined ? `${letters[userAns]}) ${q.options[userAns]}` : "لم يتم الإجابة";
+        const correctAnsText = `${letters[q.correct]}) ${q.options[q.correct]}`;
+
+        card.innerHTML = `
+          <div class="review-q-title">س ${idx + 1}: ${q.question}</div>
+          <div class="review-ans-grid">
+            <div class="badge-ans ${isCorrect ? 'badge-ans-correct' : 'badge-ans-user'}">
+              إجابتك: ${userAnsText}
+            </div>
+            <div class="badge-ans badge-ans-correct">
+              الإجابة الصحيحة: ${correctAnsText}
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 13px; color: var(--text-muted);">
+            <strong>💡 الشرح:</strong> ${q.explanation}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
 </body>
 </html>
