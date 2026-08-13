@@ -88,6 +88,60 @@
       gap: 16px;
     }
 
+    /* Top Navigation Tabs Bar */
+    .top-nav-tabs {
+      background: var(--bg-body);
+      border-top: 1px solid var(--border);
+      padding: 8px 20px;
+    }
+
+    .nav-tabs-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-tab-btn {
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      border: 2px solid transparent;
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-tab-btn:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .nav-tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .nav-tab-btn .tab-icon {
+      font-size: 18px;
+    }
+
     .brand {
       display: flex;
       align-items: center;
@@ -900,6 +954,28 @@
         <button class="icon-btn" id="soundToggleBtn" title="كتم/تشغيل الصوت">🔊</button>
         <button class="icon-btn" id="themeToggleBtn" title="الوضع الليلي/النهاري">🌙</button>
         <button class="btn btn-secondary" id="gridModalOpenBtn">🗺️ خريطة الأسئلة</button>
+      </div>
+    </div>
+
+    <!-- Header Navigation Tabs Bar -->
+    <div class="top-nav-tabs">
+      <div class="nav-tabs-container">
+        <button class="nav-tab-btn active" data-sec="all">
+          <span class="tab-icon">🌐</span>
+          <span class="tab-text">جميع الأسئلة (99)</span>
+        </button>
+        <button class="nav-tab-btn" data-sec="video">
+          <span class="tab-icon">🎬</span>
+          <span class="tab-text">أسئلة الفيديو (29)</span>
+        </button>
+        <button class="nav-tab-btn" data-sec="part1">
+          <span class="tab-icon">📌</span>
+          <span class="tab-text">المجموعة الأولية (20)</span>
+        </button>
+        <button class="nav-tab-btn" data-sec="part2">
+          <span class="tab-icon">📚</span>
+          <span class="tab-text">الأسئلة التخصصية (50)</span>
+        </button>
       </div>
     </div>
   </header>
@@ -2595,35 +2671,32 @@
         window.print();
       });
 
-      // Tab pill buttons click handler
-      const tabPillBtns = document.querySelectorAll('.tab-pill-btn');
-      tabPillBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          tabPillBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const sec = btn.getAttribute('data-sec');
-          sectionSelect.value = sec;
-          filterQuestions();
-          currentIndex = 0;
-          renderQuestion();
-          updateProgress();
-        });
-      });
-
-      // Filter Change
-      sectionSelect.addEventListener('change', () => {
-        filterQuestions();
-        const val = sectionSelect.value;
-        document.querySelectorAll('.tab-pill-btn').forEach(btn => {
-          if (btn.getAttribute('data-sec') === val) {
+      // Tab buttons click handler (syncs both header tabs and control pills)
+      function setActiveTab(sec) {
+        document.querySelectorAll('.nav-tab-btn, .tab-pill-btn').forEach(btn => {
+          if (btn.getAttribute('data-sec') === sec) {
             btn.classList.add('active');
           } else {
             btn.classList.remove('active');
           }
         });
+        sectionSelect.value = sec;
+        filterQuestions();
         currentIndex = 0;
         renderQuestion();
         updateProgress();
+      }
+
+      document.querySelectorAll('.nav-tab-btn, .tab-pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const sec = btn.getAttribute('data-sec');
+          setActiveTab(sec);
+        });
+      });
+
+      // Filter Change dropdown
+      sectionSelect.addEventListener('change', () => {
+        setActiveTab(sectionSelect.value);
       });
     });
 
